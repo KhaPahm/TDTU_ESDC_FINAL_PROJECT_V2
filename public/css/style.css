@@ -1,0 +1,87 @@
+/* Header of page */
+
+.header {
+  background-color: #f9ffed;
+  padding: 0 100px;
+}
+
+.img-brand{
+  width: 250px;
+}
+
+.profile{
+  margin: 10px;
+}
+
+.profile a {
+  text-decoration: none; 
+  color:#2b3825;
+}
+
+.profile .name {
+  font-weight: bold;
+}
+
+.profile a:hover{
+  font-style: italic;
+  text-decoration: underline;
+  color: #2b3825;
+}
+
+.avt {
+  width: 60px; 
+  border-radius: 50%;
+}
+
+/* Content of page */
+
+.content-body{
+  padding: 50px 100px;
+}
+
+.content-product {
+  padding: 30px 50px;
+}
+
+/* Update product*/
+.edit:hover {
+  text-decoration: underline;
+}
+
+/* Footer of page */
+.footer {
+  background-color: #f9ffed;
+  color: #2b3825;
+  text-align: center;
+
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+
+}
+
+.list {
+  color: black;
+  text-decoration: none;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body{
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+}
+
+/* List product */

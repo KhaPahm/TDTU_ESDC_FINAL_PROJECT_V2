@@ -1,0 +1,246 @@
+<ul class="nav d-flex">
+    <li class="nav-item me-auto p-2">
+        <a class="nav-link active text-danger edit" aria-current="page" href="#">Xóa tất cả</a>
+    </li>
+    <li class="nav-item p-2">
+      <a class="nav-link active edit" aria-current="page" id="add_data">Thêm mới</a>
+    </li>
+    <li class="nav-item dropdown p-2 edit">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Lọc
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" href="#">Action</a></li>
+          <li><a class="dropdown-item" href="#">Another action</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+    </li>
+    <form class="d-flex p-2">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+  </ul>
+<table class="table table-striped" id="listproduct">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Tên</th>
+        <th scope="col">Giá</th>
+        <th scope="col">Đã bán</th>
+        <th scope="col">Còn lại</th>
+        <th scope="col">Edit</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+    </tbody>
+</table>
+
+<div class="alert alert-success alert-dismissible fade show" id="message" role="alert" style="width:fit-content; margin: 30px">
+  <b>Congratulations! </b>You have completed the puzzle game!
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="modal" tabindex="-1" id="action_modal">
+  <div class="modal-dialog modal-xl" >
+      <div class="modal-content" style="margin: 20px;">
+        <div class="modal-header" id="dynamic_modal_title">
+          <h4 class="modal-title"></h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form method="post" id="add_product">
+              <label for="ID" class="form-label" id="lable-id">ID: </label>
+              <input type="number" class="form-control" id="ID" name="id">
+
+              <label for="name" class="form-label">Tên sản phẩm: </label>
+              <input type="text" class="form-control" id="name" name="name" value=""  >
+              <br>
+          
+              <label class="form-label" for="price">Giá: &ensp;</label>
+              <div class="input-group mb-3">
+                  <input id="price" type="number" class="form-control" aria-label="Dollar amount (with dot and two decimal places)" name="price" value="">
+                  <span class="input-group-text">VND</span>
+              </div>
+              <div id="contentProperty">
+                  
+                  <br>
+                  <div class="property" id="property1">
+                      <div class='mb-3 row'>
+                          <label for='color' class='col-lg-1 col-form-label'>Tên màu:</label>
+                          <div class='col-lg-3'>
+                            <input type='text' class='form-control' id='color1' name='color' value="">
+                          </div>
+                          <label for='colorpicker' class='form-label col-lg-1'>Color: </label>
+                          <input type='color' class='form-control form-control-color' id='colorpicker1' value="#ffffff" title='Choose your color' name='colorpicker'>
+                          <!-- <div class='col-lg-2'> 
+                              <button type='button' class='btn btn-outline-danger btn-remove' style='margin-right: 30px' name='remove' id=''>Xóa màu</button>
+                          </div> -->
+                      </div>
+                      <div class='row'>
+                          <div class='col-lg-4'>
+                              <label class='form-label' for='sizeS'>Số lượng size S: &ensp;</label>
+                              <input type='text' class='form-control' id='sizeS1' placeholder='0' name='sizeS' value="0"> 
+                          </div>
+                          <div class='col-lg-4'>
+                              <label class='form-label' for='sizeM'>Số lượng size M: &ensp;</label>
+                              <input type='number' class='form-control' id='sizeM1' placeholder='0' name='sizeM' value="0">  
+                          </div>
+                          <div class='col-lg-4'>
+                              <label class='form-label' for='sizeL'>Số lượng size L: &ensp;</label>
+                              <input type='number' class='form-control' id='sizeL1' placeholder='0' name='sizeL' value="0">  
+                          </div>
+                      </div>
+                  </div>
+                
+              </div>
+              <br>
+              <button type='button' class="btn btn-outline-primary" id="addproperty">Add new color</button>
+          
+              <br>
+              <br>
+              <label for="formFileMultiple" class="form-label">Chọn ảnh:</label>
+              <input class="form-control" type="file" id="formFileMultiple" multiple name="photos" value="">
+              <br>
+          
+              <label for="description" class="form-label">Mô tả:</label>
+              <textarea class="form-control" id="description" rows="4" name="description" >  </textarea>
+              
+              <br>
+              <div class="modal-footer">
+                <input type="hidden" name="action" id="action" value="Add" />
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="action_button">Update</button>
+              </div>
+
+          </form>
+        </div>
+       
+      </div>
+  </div>
+</div>
+
+<script>
+  load_data();
+  $("#ID").hide();
+  $("#lable-id").hide();
+  $("#message").hide();
+
+  var i = 2
+
+    function load_data()
+    {
+        $.ajax({
+            url:"http://localhost:3000/manage/action",
+            method:"POST",
+            data:{action:'fetch'},
+            dataType : "JSON",
+            success:function(data)
+            {
+                var html = '';
+
+                if(data.data.length > 0)
+                {
+                    for(var count = 0; count < data.data.length; count++)
+                    {
+                        html += `
+                        <tr>
+                            <td>`+data.data[count].id+`</td>
+                            <td>`+data.data[count].name+`</td>
+                            <td>`+data.data[count].price+`</td>
+                            <td>0</td>
+                            <td>`+data.data[count].amount+`</td>
+                            <td> <a href=""><i class="fa-solid fa-pen edit text-primary" data-id="`+data.data[count].id+`"></i></a> &ensp; <a href><i class="fa-solid fa-trash delete text-danger" data-id="`+data.data[count].id+`"></i> </td></a>
+                          </tr>
+                        `;
+                    }
+                }
+
+                $('#listproduct tbody').html(html);
+            }
+        });
+    }
+
+    $('#add_data').click(function(){
+
+      $('#dynamic_modal_title').html('<b>Thêm sản phẩm mới</b>');
+
+      $('#add_product')[0].reset();
+
+      $('#action').val('Add');
+
+      $('#action_button').text('Add');
+
+      $('#action_modal').modal('show');
+
+    });
+
+    $('#add_product').on('submit', function(event){
+      event.preventDefault();
+      $.ajax({
+        url:"http://localhost:3000/manage/action",
+        method:"POST",
+        data:$('#add_product').serialize(),
+        dataType:"JSON",
+        beforeSend:function(){
+            $('#action_button').attr('disabled', 'disabled');
+        },
+        success:function(data)
+        {
+            $('#action_button').attr('disabled', false);
+
+            $('#action_modal').modal('hide');
+
+            load_data();
+
+            $("#message").fadeTo(2000, 500).slideUp(500, function() {
+              $("#message").slideUp(500);
+            });
+        }
+    });
+    })
+
+    $(document).ready(() => {
+      $("#addproperty").click(() => {
+          $("#contentProperty").append("<div class='property' id='property"+i+"'> <br>" +
+              "<div class='mb-3 row'>" +
+                  "<label for='color' class='col-lg-1 col-form-label'>Tên màu:</label>" +
+                  "<div class='col-lg-3'>" +
+                    "<input type='text' class='form-control' id='color"+i+"' name='color'>" +
+                  "</div>" +
+                  "<label for='colorpicker' class='form-label col-lg-1'>Color: </label>" +
+                  "<input type='color' class='form-control form-control-color' id='colorpicker"+i+"' value='#563d7c' title='Choose your color' name='colorpicker'>" +
+                  "<div class='col-lg-2'>" +
+                      "<button type='button' class='btn btn-outline-danger btn-remove' style='margin-right: 30px' name='remove' id='"+i+"'>Xóa màu</button>" +
+                  "</div>" +
+              "</div>" +
+              "<div class='row'>" +
+                  "<div class='col-lg-4'>" +
+                      "<label class='form-label' for='sizeS'>Số lượng size S: &ensp;</label>" +
+                      "<input type='text' class='form-control' id='sizeS"+i+"' placeholder='0' name='sizeS' value='0'>" +
+                  "</div>"+
+                  "<div class='col-lg-4'>" +
+                      "<label class='form-label' for='sizeM'>Số lượng size M: &ensp;</label>"+
+                      "<input type='number' class='form-control' id='sizeM"+i+"' placeholder='0' name='sizeM' value='0'>"  +
+                  "</div>"+
+                  "<div class='col-lg-4'>"+
+                      "<label class='form-label' for='sizeL'>Số lượng size L: &ensp;</label>"+
+                      "<input type='number' class='form-control' id='sizeL"+i+"' placeholder='0' name='sizeL' value='0'> " +
+                  "</div>"+
+              "</div>"+
+          "</div>" )
+          i++;
+      })
+
+      $(document).on("click", ".btn-remove", function() {
+          var btn_id = $(this).attr("id");
+          $("#property" + btn_id).remove();
+      })
+
+    })
+
+
+
+
+</script>

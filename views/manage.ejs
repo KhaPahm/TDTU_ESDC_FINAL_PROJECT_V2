@@ -1,0 +1,99 @@
+<%- include("partials/header.ejs") -%>
+
+
+<section class="header">
+    <nav class="navbar">
+        <div class="container-fluid">
+          <img class="navbar-brand img-brand" src="img/logo_brand.png">
+
+          <div class="d-flex" style="text-align: right;">
+                <div class="profile">
+                    <a href="#" class="name">Admin</a>
+                    <br>
+                    <a href="#" >ad1@admin.com</a>
+                </div>
+                <div>
+                    <img src="img/defaut_avatar.jpg" alt="avartar" class="avt">
+                </div>
+          </div>
+        </div>
+      </nav>
+</section>
+
+<section class="content-body">
+    <div class="row">
+        <div class="task col-lg-3">
+            
+
+            <div class="accordion" id="accordionExample" style="width: 100%; margin: 20px">
+                <h3 class="">Quản lý cửa hàng</h3>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Quản lí mặt hàng
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a class="list" href="/manage">Cập nhật</a></li>
+                                <li class="list-group-item"><a class="list" href="#">Doanh thu</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Quản lí đơn hàng
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a class="list" href="/order/neworder">Đơn hàng mới</a></li>
+                                <li class="list-group-item"><a class="list" href="/order/orderprocess">Đơn hàng đang xử lý</a></li>
+                                <li class="list-group-item"><a class="list" href="/order/doneorder">Đơn hàng đã bán</a></li>
+                                <li class="list-group-item"><a class="list" href="/order/returnorder">Đơn hàng bị hoàn trả</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Quản lí tài khoản
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a class="list" href="#">Quản lí tài khoản</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+        </div>
+
+        <div class="col-lg-9">
+            <!-- Manage home page -->
+            <div class="content-product">
+                <p><a href="/admin">Home</a> / <a href="#"><%= title %></a></p>
+
+                <h1><%= title %></h1>
+
+
+            </div>
+            
+            <div class="content-product">
+              <%- include(file) %>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<%- include("partials/footer.ejs") -%>
+
