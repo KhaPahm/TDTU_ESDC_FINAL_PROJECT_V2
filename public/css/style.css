@@ -6,7 +6,7 @@
 }
 
 .img-brand{
-  width: 250px;
+  width: 200px;
 }
 
 .profile{
@@ -85,3 +85,44 @@ body{
 }
 
 /* List product */
+
+/*Customer layout*/
+/*Search bar*/
+
+.btn-search {
+  background-color: transparent;
+  border: 1px solid #2b3825;
+  border-radius: 5px;
+  color: #2b3825;
+}
+
+.btn-search:hover {
+  background-color: #2b3825;
+  color: #f9ffed;
+}
+
+.btn-signin {
+  background-color: #2b3825;
+  border: 1px solid #2b3825;
+  border-radius: 3px;
+  height: 40px;
+  color: #f9ffed;
+
+}
+
+.btn-signin:hover {
+  background-color: #41523a;
+}
+
+.item-link {
+  margin: 0px 10px;
+  font-size: larger;
+  text-decoration: none;
+  color: #2b3825;
+}
+
+.item-link:hover {
+  color: #121810;
+  font-style: italic;
+}
+

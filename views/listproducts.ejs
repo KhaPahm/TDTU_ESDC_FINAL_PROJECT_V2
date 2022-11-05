@@ -113,7 +113,7 @@
           <br>
           <br>
           <label for="formFileMultiple" class="form-label">Chọn ảnh:</label>
-          <input class="form-control" type="file" id="formFileMultiple" name="photos">
+          <input class="form-control" type="file" id="formFileMultiple" name="photos" multiple>
           <br>
 
           <label for="description" class="form-label">Mô tả:</label>
@@ -187,15 +187,15 @@
 
   $('#add_product').on('submit', function (event) {
 
-      
-      const sizeL = $(".sizeL")
-
     event.preventDefault();
+    var form = $("#add_product");
+    var formData = new FormData(form[0]);
     $.ajax({
       url: "http://localhost:3000/manage/action",
       method: "POST",
-      data: $('#add_product').serialize(),
-      dataType: "JSON",
+      data: formData,
+      contentType: false, 
+      processData: false,
       beforeSend: function () {
         $('#action_button').attr('disabled', 'disabled');
       },
