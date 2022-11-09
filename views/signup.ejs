@@ -1,39 +1,160 @@
 <div class="content-body">
     <div class="sigup-title">
-        <h3 >Đăng ký tài khoản</h3>
+        <h3>Đăng ký tài khoản</h3>
     </div>
     <hr>
     <div class="row d-flex justify-content-center">
         <div class="col-lg-6 col-md-8 col-sm-10">
-            <form class="signup-form">
+            <form class="signup-form" id="signup-form" onsubmit="return false;">
                 <div class="signup-input">
-                    <label for="email" class="form-label">Địa chỉ email:</label>
-                    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                    <label for="username" class="form-label"><span style="color: red;">*</span> Tên đăng nhập:</label>
+                    <input type="text" class="form-control" id="username" placeholder="name@example.com"
+                        name="username">
                 </div>
                 <br>
-                <div class="signup-input">
-                    <label for="password" class="form-label">Mật khẩu:</label>
-                    <input type="password" class="form-control" id="password" >
-                </div>
-                <br>
-                <div class="signup-input">
-                    <label for="confirmpassword" class="form-label">Nhập lại mật khẩu:</label>
-                    <input type="password" class="form-control" id="confirmpassword" >
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-6">
-                        <label for="firstname" class="form-label">Họ:</label>
-                        <input type="text" class="form-control" id="firstname">
-                    </div>
-                    <div class="col-6">
-                        <label for="lastname" class="form-label">Tên:</label>
-                        <input type="text" class="form-control" id="lastname">
-                    </div>
+
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="signup-error">
+                    <strong id="message">User has been registered</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
                 
+                <div class="signup-input">
+                    <label for="password" class="form-label"><span style="color: red;">*</span> Mật khẩu: </label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+                <br>
+                <div class="signup-input">
+                    <label for="confirmpassword" class="form-label"><span style="color: red;">*</span> Nhập lại mật khẩu:</label>
+                    <input type="password" class="form-control" id="confirmpassword" name="confirmpassword">
+                </div>
+                <div id="checkpassword"></div>
+                <br>
+                <div class="row signup-input">
+                    <div class="col-6">
+                        <label for="firstname" class="form-label"><span style="color: red;">*</span> Họ:</label>
+                        <input type="text" class="form-control" id="firstname" name="firstname">
+                    </div>
+                    <div class="col-6">
+                        <label for="lastname" class="form-label"> <span style="color: red;">*</span> Tên:</label>
+                        <input type="text" class="form-control" id="lastname" name="lastname">
+                    </div>
+                </div>
+                <br>
+                <p> Giới tính: </p>
+                <div class="form-check" class="form-label" id="sex">
+                    <div class="row">
+                        <div class="col-lg-2">
+                            <input class="form-check-input" type="radio" name="sex" id="male" value="nam">
+                            <label class="form-check-label" for="male">
+                                Nam
+                            </label>
+                        </div>
+
+                        <div class="col-lg-2">
+                            <input class="form-check-input" type="radio" name="sex" id="female" value="nu">
+                            <label class="form-check-label" for="female">
+                                Nữ
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row signup-input">
+                    <div class="col-6">
+                        <label for="phome" class="form-label"> <span style="color: red;">*</span> Số điện thoại: </label>
+                        <input type="text" class="form-control" id="phome" name="phone">
+                    </div>
+                    <div class="col-6">
+                        <label for="" class="form-label">Email: </label>
+                        <input type="text" class="form-control" id="email" name="email">
+                    </div>
+                </div>
+                <br>
+                <div class="signup-input">
+                    <label for="address" class="form-label"> <span style="color: red;">*</span> Địa chỉ:</label>
+                    <input type="text" class="form-control" id="address" name="address">
+                </div>
+                <br>
+                <div class="d-flex justify-content-center">
+                    <input type="submit" name="signin" value="ĐĂNG KÍ" class="btn-signin" style="width: 20%">
+                </div>
             </form>
+            <br>
         </div>
     </div>
-    
+
+    <div class="modal" tabindex="-1" id="signup-done">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">NEW SHIRTS notification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Sign Up Success!!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">SHOPPING NOW</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        $("#signup-error").hide();
+        $('#signup-form').on('submit', function (event) {
+
+            event.preventDefault;
+
+            $.ajax({
+                url: "http://localhost:3000/signup",
+                method: "POST",
+                data: $('#signup-form').serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    if (data.status == 'error') {
+                        $("#signup-error").slideDown(300);
+                        $("#signup-error").show();
+
+                    }
+                    else {
+                        $("#signup-error").slideUp(500);
+                        $("#signup-error").hide();
+                        $("#signup-done").modal("show");
+                    }
+                }
+            })
+        })
+
+        function checkPasswordMatch() {
+            var password = $("#password").val();
+            var confirmPassword = $("#confirmpassword").val();
+            if (password != confirmPassword)
+                $("#checkpassword").html("<b class='text-danger'>Passwords does not match!</b>");
+            else
+                $("#checkpassword").html("<b class='text-success'> Passwords match. </b>");
+        }
+
+        if($("#password").val() !== "") {
+            $("#confirmpassword").keyup(checkPasswordMatch);
+        }
+
+        $("#username").keyup(checknull)
+        $("#password").keyup(checknull)
+        $("#confirmpassword").keyup(checknull)
+        $("#firstname").keyup(checknull)
+        $("#lastname").keyup(checknull)
+        $("#phome").keyup(checknull)
+        $("#address").keyup(checknull)
+
+        function checknull() {
+            if($(this).val() == ""){
+                $(this).addClass('not-null');
+            } else {
+                $(this).removeClass('not-null');
+            }
+        }
+    </script>
 </div>
