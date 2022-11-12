@@ -1,0 +1,87 @@
+<div class="content-body">
+    <div class="d-flex justify-content-center" id="nodata">
+        <div class="card" style="width: 30rem;">
+            <div class="card-body">
+                <h5 class="card-title">Oh, no! Hong có gì trong giỏ của bạn hết :((</h5>
+                <p class="card-text">Quay lại cửa hàng để thêm sản phẩm vào giỏ hàng nhé!</p>
+                <div class="d-flex mb-3">
+                    <a href="/" class="ms-auto p-2"><button type="button" class="btn btn-primary">Quay lại cửa hàng
+                            ngay!</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="cart-content">
+                <div class="cart-titel">
+                    <h3>Giỏ hàng của bạn</h3>
+                </div>
+                <hr>
+                <div class="cart-product-box">
+                    <div class="row">
+                        <div class="col-3">
+                            <img src="1667802202083-77527763-den.png" style="width: 100%">
+                        </div>
+                        <div class="col-9">
+                            <h4>Tên sản phẩm</h4>
+                            <h5>Giá</h5>
+                            <br>
+                            <div class="property">
+                                <div>Size: </div>
+                                <div>S</div>
+                            </div>
+                            <div class="property">
+                                <div>Màu sắc: </div>
+                                <div>Đỏ</div>
+                            </div>
+                            <div class="property">
+                                <div>Số lượng: </div>
+                                <div>1</div>
+                                <div class="property-sum-price">
+                                    <div>10000</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="col-lg-5">
+            <div class="cart-infor-pay">
+                <div class="cart-titel">
+                    <h3>Thông tin thanh toán</h3>
+                </div>
+                <hr>
+                <div>
+                    <div class="fs-6">Giá trị:</div>
+                    <div class="fs-6">Vận chuyển:</div>
+                </div>
+                <hr>
+                <div>
+                    <div class="fs-5">Tổng cộng:</div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    $('#nodata').hide();
+    $(document).ready(
+        $.ajax({
+            url: '/checkcart',
+            method: 'GET',
+            success: (data) => {
+                if (data.status == "NoData") {
+                    $('#nodata').show();
+                }
+            }
+        })
+    )
+</script>

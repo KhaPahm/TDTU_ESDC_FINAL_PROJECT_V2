@@ -1,6 +1,6 @@
 <%- include("partials/header.ejs") -%>
   <section class="header">
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg fixed-top color-nav">
       <div class="container-fluid">
         <a class="navbar-brand" href="/"><img class="img-brand" src="img/logo_brand.png"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
@@ -30,18 +30,15 @@
 
           <div class="d-flex">
             <ul class="navbar-nav">
-              <% if (loggedIn=="false" ) { %>
-                <li class="nav-item">
-                  <a class="item-link" href="#" data-bs-toggle="modal" data-bs-target="#loginform"> Đăng nhập</a>
-                </li>
-                <% } else { %>
-                  <li class="nav-item">
-                    <a class="item-link"> Đã đăng nhập</a>
-                  </li>
-                  <% } %>
-                    <li class="nav-item">
-                      <a class="item-link" href="#"> <i class="fa-solid fa-cart-shopping"></i> </a>
-                    </li>
+
+              <li class="nav-item" id="inforUser">
+
+              </li>
+
+              <li class="nav-item align-self-center fs-5">
+                <a class="item-link" id="cart" href="/cart"> <i class="fa-solid fa-cart-shopping"></i><span
+                    id="numberOfProduct"></span> </a>
+              </li>
             </ul>
           </div>
 
@@ -61,8 +58,9 @@
               <img src="img/logo_brand.png" class="img-brand">
             </div>
             <br>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="signup-error" style="text-align: center;"> 
-              <strong id="message" >Incorrect username or Password!</strong>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="signup-error"
+              style="text-align: center;">
+              <strong id="message">Incorrect username or Password!</strong>
             </div>
 
             <div>
@@ -98,12 +96,14 @@
       </div>
     </div>
   </section>
-  <section class="body-index">
+  <section class="bd">
     <%- include(file) -%>
   </section>
 
   <script>
     $("#signup-error").hide();
+    $("#cart").hide();
+
     $("#signin").on("submit", function (event) {
       event.preventDefault;
       $.ajax({
@@ -116,11 +116,46 @@
             $("#signup-error").slideDown(300);
             $("#signup-error").show();
           } else {
-            $('#signin').hide();
+            location.reload();
           }
         }
       })
     })
+
+
+    $(document).ready(
+      $.ajax({
+        url: "/loggined",
+        method: "GET",
+        success: function (data) {
+          if (data.loggedIn == "false") {
+            $("#inforUser").html("<a class='item-link' href='#' data-bs-toggle='modal' data-bs-target='#loginform'> Đăng nhập</a>")
+          } else {
+            var html = "<div class='d-flex' style='margin-left: 10px;'>" +
+              "<div>" +
+              "<img src='./" + data.avtSrc + "' alt='avartar' class='avt'>" +
+              "</div>" +
+              "<div class='profile dropdown'>" +
+              "<a href='#' class='name' data-bs-toggle='dropdown' aria-expanded='false'>" +
+              data.user +
+              "</a>" +
+              "<ul class='dropdown-menu'>" +
+              "<li><a class='dropdown-item' href='#'>Thông tin cá nhân</a></li>" +
+              "<li><hr class='dropdown-divider'></li>" +
+              "<li><a class='dropdown-item' href='/logout'>Đăng xuất</a></li>" +
+              "</ul>" +
+              "<br>" +
+              "<a href='#'>ad1@admin.com</a>" +
+              "</div>" +
+              "</div>";
+            $("#inforUser").html(html);
+            $('#numberOfProduct').text('(' + data.amountCart + ')');
+            $("#cart").show();
+          }
+        }
+      })
+    )
+
   </script>
 
   <%- include("partials/footer.ejs") -%>

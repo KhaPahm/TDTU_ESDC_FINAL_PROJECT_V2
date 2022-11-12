@@ -1,0 +1,227 @@
+<div class="content-body">
+    <div class="row">
+        <div class="col-lg-5 ">
+            <div class="display-img-product">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+                    <div class="carousel-indicators">
+                        <% for(var i=0; i < productInfo.PImgs.length; i++) { %>
+                            <% if(i==0) { %>
+                                <button type="button" data-bs-target="#carouselExampleIndicators"
+                                    data-bs-slide-to="<%= i %>" class="active" aria-current="true"
+                                    aria-label="Slide <%= i+1 %>"></button>
+                                <% } else { %>
+                                    <button type="button" data-bs-target="#carouselExampleIndicators"
+                                        data-bs-slide-to="<%= i %>" aria-label="Slide <%= i+1 %>"></button>
+                                    <% } %>
+                                        <% } %>
+                    </div>
+                    <div class="carousel-inner">
+                        <% var ac='active' %>
+                            <% for(var i=0; i < productInfo.PImgs.length; i++) { %>
+                                <% if(i==0) { %>
+                                    <div class="carousel-item active">
+                                        <img src="<%= productInfo.PImgs[i] %>" class="d-block w-100" alt="...">
+                                    </div>
+                                    <% } else { %>
+                                        <div class="carousel-item">
+                                            <img src="<%= productInfo.PImgs[i] %>" class="d-block w-100" alt="...">
+                                        </div>
+                                        <% } %>
+
+                                            <% } %>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-7">
+            <div>
+                <h4>
+                    <%= productInfo.PName %>
+                </h4>
+            </div>
+            <div>
+                <h5>
+
+                </h5>
+            </div>
+            <hr>
+            <div>
+                <form method="post" id="addToCart" onsubmit="return false;">
+                    <div hidden>
+                        <input type="text" name="IDProduct" value="<%= productInfo.PID %>">
+                    </div>
+                    <div class="property-content">
+                        <div class="property-title">
+                            Color:
+                        </div>
+
+                        <div class="d-flex justify-content-start">
+                            <% for(var i=0; i < productInfo.PColor.length; i++) { %>
+                                <div class="color-box">
+                                    <div class="c-color-content">
+                                        <label class="lableExpandedColor">
+                                            <input type="radio" name="color" value="<%=productInfo.PColor[i] %>"
+                                                id="color<%= i %>">
+                                            <div class="c-color-content  c-color-radio"
+                                                style="background-color: <%= productInfo.PColorpicker[i] %>;"
+                                                title="<%= productInfo.PColor[i] %>">
+                                                <label for="color<%= i %>" class="align-self-center">
+                                                    <div class="color-choose">
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                <% } %>
+                        </div>
+                        <div class="alert alert-dismissible fade show alert-danger" id="messageColor" role="alert"
+                            style="width:fit-content; margin-top: 20px;">
+                            <b id="messColor"> Vui lòng chọn màu sắc! </b>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+
+                    </div>
+
+                    <div class="property-content">
+                        <div class="property-title">
+                            Size:
+                        </div>
+                        <div class="d-flex justify-content-start">
+                            <label class="lableExpanded">
+                                <input type="radio" name="size" value="S" id="sizeS">
+                                <div class="c-size-content  c-size-radio">
+                                    <a class="a-choose-size" href="#">
+                                        <div class="size-property d-flex justify-content-center">
+                                            <label for="sizeS" class="align-self-center">S</label>
+                                        </div>
+                                    </a>
+                                </div>
+                            </label>
+
+                            <label class="lableExpanded">
+                                <input type="radio" name="size" value="M" id="sizeM">
+                                <div class="c-size-content  c-size-radio">
+                                    <a class="a-choose-size" href="#">
+                                        <div class="size-property d-flex justify-content-center">
+                                            <label for="sizeM" class="align-self-center">M</label>
+                                        </div>
+                                    </a>
+                                </div>
+                            </label>
+
+                            <label class="lableExpanded">
+                                <input type="radio" name="size" value="L" id="sizeL">
+                                <div class="c-size-content  c-size-radio">
+                                    <a class="a-choose-size" href="#">
+                                        <div class="size-property d-flex justify-content-center">
+                                            <label for="sizeL" class="align-self-center">L</label>
+                                        </div>
+                                    </a>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="alert alert-dismissible fade show alert-danger" id="messageSize" role="alert"
+                            style="width:fit-content; margin-top: 20px;">
+                            <b id="messSize"> Vui lòng chọn kích thước! </b>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+
+                    <div class="property-content">
+                        <div class="property-title">
+                            Số lượng:
+                        </div>
+                        <div class="d-flex justify-content-start">
+                            <input class="amount-product" type="number" name="amount" id="amount" value="1">
+                        </div>
+                        <div class="alert alert-dismissible fade show alert-danger" id="messageAmount" role="alert"
+                            style="width:fit-content; margin-top: 20px">
+                            <p id="messAmount"> </p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+
+
+                    <hr>
+
+                    <div>
+                        <input type="submit" value="Thêm vào giỏ hàng" class="add-to-cart">
+                    </div>
+
+                    <div class="alert alert-dismissible fade show alert-danger" id="messageNoneLogin" role="alert"
+                        style="width:100%; margin-top: 10px">
+                        <p> Vui lòng đăng nhập để thêm sản phẩn vào giỏ hàng! </p>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+
+                        <div class="p-2">
+                            <%= productInfo.PID %>
+                        </div>
+                        <div class="p-2">
+                            Mã sản phẩm:
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    $("#messageColor").hide();
+    $("#messageSize").hide();
+    $("#messageAmount").hide();
+    $('#messageNoneLogin').hide();
+    $("#addToCart").on('submit', function (event) {
+        event.preventDefault;
+        var form = $('#addToCart').serialize();
+        var color = $("input[name='color']:checked").val();
+        var size = $("input[name='size']:checked").val()
+        var amount = $("#amount").val
+        if (!color) {
+            $("#messageColor").fadeTo(2000, 500).slideUp(500, function () {
+                $("#messageColor").slideUp(500);
+            });
+        } else if (!size) {
+            $("#messageSize").fadeTo(2000, 500).slideUp(500, function () {
+                $("#messageSize").slideUp(500);
+            });
+        } else {
+            $.ajax({
+                url: "/addtocart",
+                method: "POST",
+                data: $('#addToCart').serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    if (data.status == "error") {
+                        $("#messAmount").html("Số lượng sản phẩm có thuộc tính như bạn chọn chỉ còn <b>" + data.CurrentAmount + "</b> sản phẩm! Vui lòng chọn số lượng ít hơn!");
+                        $("#messageAmount").fadeTo(2000, 500).slideDown(500, function () {
+                            $("#messageAmount").show();
+                        });
+                    } else if (data.status == "nonelogin") {
+                        $("#messageNoneLogin").fadeTo(2000, 500).slideDown(500, function () {
+                            $("#messageNoneLogin").slideUp(1000);
+                        });
+                    } else {
+                        console.log(data.status);
+                        location.reload();
+                    }
+                }
+            })
+        }
+    })
+</script>

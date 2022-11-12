@@ -17,14 +17,15 @@
                     <strong id="message">User has been registered</strong>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
-                
+
                 <div class="signup-input">
                     <label for="password" class="form-label"><span style="color: red;">*</span> Mật khẩu: </label>
                     <input type="password" class="form-control" id="password" name="password">
                 </div>
                 <br>
                 <div class="signup-input">
-                    <label for="confirmpassword" class="form-label"><span style="color: red;">*</span> Nhập lại mật khẩu:</label>
+                    <label for="confirmpassword" class="form-label"><span style="color: red;">*</span> Nhập lại mật
+                        khẩu:</label>
                     <input type="password" class="form-control" id="confirmpassword" name="confirmpassword">
                 </div>
                 <div id="checkpassword"></div>
@@ -61,7 +62,8 @@
                 <br>
                 <div class="row signup-input">
                     <div class="col-6">
-                        <label for="phome" class="form-label"> <span style="color: red;">*</span> Số điện thoại: </label>
+                        <label for="phome" class="form-label"> <span style="color: red;">*</span> Số điện thoại:
+                        </label>
                         <input type="text" class="form-control" id="phome" name="phone">
                     </div>
                     <div class="col-6">
@@ -103,13 +105,11 @@
 
 
     <script>
-        $("#signup-error").hide();
+        $('#signup-error').hide();
         $('#signup-form').on('submit', function (event) {
-
             event.preventDefault;
-
             $.ajax({
-                url: "http://localhost:3000/signup",
+                url: "/signup",
                 method: "POST",
                 data: $('#signup-form').serialize(),
                 dataType: "JSON",
@@ -117,7 +117,6 @@
                     if (data.status == 'error') {
                         $("#signup-error").slideDown(300);
                         $("#signup-error").show();
-
                     }
                     else {
                         $("#signup-error").slideUp(500);
@@ -130,16 +129,18 @@
 
         function checkPasswordMatch() {
             var password = $("#password").val();
-            var confirmPassword = $("#confirmpassword").val();
-            if (password != confirmPassword)
-                $("#checkpassword").html("<b class='text-danger'>Passwords does not match!</b>");
-            else
-                $("#checkpassword").html("<b class='text-success'> Passwords match. </b>");
+            if(password !== "") {
+                var confirmPassword = $("#confirmpassword").val();
+                if (password != confirmPassword)
+                    $("#checkpassword").html("<b class='text-danger'>Passwords does not match!</b>");
+                else
+                    $("#checkpassword").html("<b class='text-success'> Passwords match. </b>");
+            }
         }
 
-        if($("#password").val() !== "") {
-            $("#confirmpassword").keyup(checkPasswordMatch);
-        }
+        
+        $("#confirmpassword").keyup(checkPasswordMatch);
+        
 
         $("#username").keyup(checknull)
         $("#password").keyup(checknull)
@@ -150,7 +151,7 @@
         $("#address").keyup(checknull)
 
         function checknull() {
-            if($(this).val() == ""){
+            if ($(this).val() == "") {
                 $(this).addClass('not-null');
             } else {
                 $(this).removeClass('not-null');
