@@ -356,8 +356,17 @@ body {
   text-align: left;
 }
 
-.row-product-cart{
+.row-product-cart {
   margin-bottom: 2em;
 
-  
+
+}
+
+
+.lableExpandedAddress>input {
+  display: none;
+}
+
+.lableExpandedAddress input:checked {
+  background-color: #cccccc;
 }

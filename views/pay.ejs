@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col-lg-6">
-                
+
                 <div class="cart-titel">
                     <h3>Thông tin giao hàng</h3>
                 </div>
@@ -14,17 +14,22 @@
                         <h6 id="customerEmail"></h6>
                     </div>
                     <div class="col-1" style="text-align: right;">
-                        <button style="border: transparent none 0px; background-color:transparent;"><i class="fa-solid fa-pen"></i></button>
+                        <button style="border: transparent none 0px; background-color:transparent;"><i
+                                class="fa-solid fa-pen"></i></button>
                     </div>
                 </div>
                 <hr>
                 <div class="address">
                     <div class="card" style="width: 100%;">
                         <div class="card-body">
-                            <h6 class="card-subtitle mb-2 text-muted">Địa chỉ</h6>
+                            <label for="homeAdress" class="align-self-center">
+                                <h6 class="card-subtitle mb-2 text-muted">Nhận hàng tại nhà:</h6>
+                            </label>
                             <p class="card-text" id="customerAddress"></p>
-                            <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Thêm địa chỉ</a>
-                            <a href="#" class="card-link">Đổi địa chỉ</a>
+                            <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Thêm địa
+                                chỉ</a>
+                            <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#changeAddress">Đổi địa
+                                chỉ</a>
                         </div>
                     </div>
                 </div>
@@ -34,23 +39,44 @@
                 </div>
             </div>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
                 <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm địa chỉ</h1>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm địa chỉ</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <textarea class="form-control" id="newaddress" rows="3" name="newaddress"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary">Thêm địa chỉ</button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <textarea class="form-control" id="newaddress" rows="3" name="newaddress"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                      <button type="button" class="btn btn-primary">Thêm địa chỉ</button>
-                    </div>
-                  </div>
                 </div>
-              </div>
+            </div>
+
+            <div class="modal fade" id="changeAddress" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Đổi địa chỉ</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="radio" id="q7" name="address" value="Quận 7">
+                            <label for="q7">Quận 7</label>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="button" class="btn btn-primary">Thêm địa chỉ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
 
             <div class="col-lg-6">
