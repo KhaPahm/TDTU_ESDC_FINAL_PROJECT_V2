@@ -19,7 +19,7 @@ router.post('/store', async (req, res, next) => {
 })
 
 router.get('/', async (req, res, next) => {
-  res.render("index", { file: 'store' })
+  res.render("index", { title:'NewShirts store', file: 'store' })
 });
 
 router.get('/loggined', async (req, res, next) => {
@@ -46,7 +46,7 @@ router.get('/loggined', async (req, res, next) => {
 
 // SIGNUP
 router.get('/signup', function (req, res, next) {
-  res.render('index', { file: 'signup', loggedIn: 'false' })
+  res.render('index', {title:'NewShirts Sigup', file: 'signup', loggedIn: 'false' })
 });
 
 router.post('/signup', function (req, res, next) {
@@ -152,7 +152,7 @@ router.get('/product-detail', function (req, res, next) {
         for (var i = 0; i < resultImgs.length; i++) {
           product.PImgs.push(resultImgs[i].Path);
         }
-        res.render('index', { file: 'productdetail', productInfo: product })
+        res.render('index', { title: resultP[0].Name ,file: 'productdetail', productInfo: product })
       })
     })
 

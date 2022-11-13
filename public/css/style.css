@@ -303,6 +303,12 @@ body {
   margin: 0 5em;
 }
 
+@media only screen and (max-width: 992px) {
+  .cart-content {
+    margin: 0 0em;
+  }
+}
+
 .cart-property {
   padding: 0;
   margin: 5px;
@@ -316,14 +322,42 @@ body {
   margin: 1em 0em;
 }
 
-.property {
+.flex-bx {
   display: flex;
   flex-direction: row;
   justify-content: start;
+  flex-wrap: wrap;
 }
 
-.property-sum-price {
-  display: flex;
-  flex-direction: row;
-  justify-self: flex-end;
+.left {
+  flex-grow: 1;
+}
+
+.rignt {
+  flex-shrink: 1;
+}
+
+.btn-pay {
+  width: 100%;
+  padding: 0.5em;
+  font-weight: bolder;
+  background-color: #121810;
+  color: #f1f1f1;
+  border: #121810 solid 1px;
+}
+
+.btn-pay:hover {
+  background-color: transparent;
+  color: #121810;
+}
+
+.about-transport {
+  margin-top: 2em;
+  text-align: left;
+}
+
+.row-product-cart{
+  margin-bottom: 2em;
+
+  
 }

@@ -1,6 +1,6 @@
 <div class="content-body">
-    <div class="d-flex justify-content-center" id="nodata">
-        <div class="card" style="width: 30rem;">
+    <div class="d-flex justify-content-center">
+        <div class="card" style="width: 30rem;" id="nodata">
             <div class="card-body">
                 <h5 class="card-title">Oh, no! Hong có gì trong giỏ của bạn hết :((</h5>
                 <p class="card-text">Quay lại cửa hàng để thêm sản phẩm vào giỏ hàng nhé!</p>
@@ -12,59 +12,57 @@
         </div>
     </div>
 
+    <div id="cartdetail">
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="cart-content">
+                    <div class="cart-titel">
+                        <h3>Giỏ hàng của bạn</h3>
+                    </div>
+                    <hr>
+                    <div class="cart-product-box" id="cart-product-box">
 
-    <div class="row">
-        <div class="col-lg-7">
-            <div class="cart-content">
-                <div class="cart-titel">
-                    <h3>Giỏ hàng của bạn</h3>
+                    </div>
+                    <hr>
                 </div>
-                <hr>
-                <div class="cart-product-box">
-                    <div class="row">
-                        <div class="col-3">
-                            <img src="1667802202083-77527763-den.png" style="width: 100%">
+            </div>
+            <div class="col-lg-5">
+                <div class="cart-infor-pay">
+                    <div class="cart-titel">
+                        <h3>Thông tin thanh toán</h3>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="flex-bx">
+                            <div class="fs-6 left">Giá trị:</div>
+                            <div class="fs-6 right" id="value"></div>
                         </div>
-                        <div class="col-9">
-                            <h4>Tên sản phẩm</h4>
-                            <h5>Giá</h5>
-                            <br>
-                            <div class="property">
-                                <div>Size: </div>
-                                <div>S</div>
-                            </div>
-                            <div class="property">
-                                <div>Màu sắc: </div>
-                                <div>Đỏ</div>
-                            </div>
-                            <div class="property">
-                                <div>Số lượng: </div>
-                                <div>1</div>
-                                <div class="property-sum-price">
-                                    <div>10000</div>
-                                </div>
-                            </div>
+                        <div class="flex-bx">
+                            <div class="fs-6 left">Vận chuyển:</div>
+                            <div class="fs-6 right">30.000</div>
                         </div>
+
+                    </div>
+                    <hr>
+                    <div class="flex-bx">
+                        <div class="fs-5 left">Tổng cộng:</div>
+                        <div class="fs-5 right"><b id="total-in-cart"></b></div>
+                    </div>
+                    <br>
+                    <div>
+                        <a href="/pay"><button type="submit" class="btn-pay" >THANH TOÁN</button></a>
                     </div>
                 </div>
-                <hr>
-            </div>
-        </div>
-        <div class="col-lg-5">
-            <div class="cart-infor-pay">
-                <div class="cart-titel">
-                    <h3>Thông tin thanh toán</h3>
-                </div>
-                <hr>
-                <div>
-                    <div class="fs-6">Giá trị:</div>
-                    <div class="fs-6">Vận chuyển:</div>
-                </div>
-                <hr>
-                <div>
-                    <div class="fs-5">Tổng cộng:</div>
-                </div>
 
+                <div class="about-transport">
+                    <h6>Chính sách giao hàng:</h6>
+                    <li>Giao hàng toàn quốc</li>
+                    <li>Giao hàng trong 3-5 ngày</li>
+                    <li>Giao hàng tiêu chuẩn đồng giá 30.000</li>
+                    <li>Cách thức thanh toán: COD nhận hàng rồi thanh toán</li>
+                    <li>Miễn phí đổi trả sản phẩm trong 7 ngày</li>
+
+                </div>
             </div>
         </div>
     </div>
@@ -73,13 +71,44 @@
 
 <script>
     $('#nodata').hide();
+    $('#cartdetail').hide();
     $(document).ready(
         $.ajax({
-            url: '/checkcart',
+            url: 'cart/checkcart',
             method: 'GET',
             success: (data) => {
+                console.log(data.status)
                 if (data.status == "NoData") {
                     $('#nodata').show();
+                }
+                if (data.status == "HaveData") {
+                    $('#nodata').hide();
+                    $('#cartdetail').show();
+                    var html = ""
+                    var total = 0;
+                    for (var i = 0; i < data.listP.length; i++) {
+                        var price = Number(data.listP[i].Amount) * Number(data.listP[i].PurchasePrice)
+                        html += "<div class='row row-product-cart'>" +
+                            "<div class='col-3'><a href='/product-detail?id=" + data.listP[i].ProductID + "'> <img src='" + data.listP[i].Path + "' style='width: 100%'> </a></div>" +
+                            "<div class='col-8'>" +
+
+                            "<div><a class='product-titel' href='/product-detail?id=" + data.listP[i].ProductID + "'><h4>" + data.listP[i].Name + "</h4></a></div>" +
+                            "<h5>" + data.listP[i].PurchasePrice + "</h5>" +
+                            "<div>Size: <span>" + data.listP[i].Size + "</span></div>" +
+                            "<div>Màu sắc: <span>" + data.listP[i].Color + "</span></div>" +
+                            "<div class='flex-bx'>" +
+                            "<div class='left'>Số lượng: <span>" + data.listP[i].Amount + "</span></div>" +
+                            "<div class='right'> " + price + " </div>" +
+                            "</div>" +
+                            "</div>" +
+                            "<div class='col-1'> <a href='/cart/remove?cid=" + data.listP[i].CartID + "&pid=" + data.listP[i].ProductID + "&color=" + data.listP[i].Color + "&size=" + data.listP[i].Size + "&amount=" + data.listP[i].Amount + "''><button type='button' class='btn-close' aria-label='Close'></button></a></div>" +
+                            "</div>"
+                        total += price;
+                    }
+                    $('#cart-product-box').html(html);
+
+                    $('#value').text(total);
+                    $('#total-in-cart').text(total + 30000);
                 }
             }
         })

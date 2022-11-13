@@ -1,0 +1,156 @@
+<div class="content-body">
+    <div>
+        <div class="row">
+            <div class="col-lg-6">
+                
+                <div class="cart-titel">
+                    <h3>Thông tin giao hàng</h3>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-11">
+                        <h5 id="customerName"></h5>
+                        <h6 id="customerPhone"></h6>
+                        <h6 id="customerEmail"></h6>
+                    </div>
+                    <div class="col-1" style="text-align: right;">
+                        <button style="border: transparent none 0px; background-color:transparent;"><i class="fa-solid fa-pen"></i></button>
+                    </div>
+                </div>
+                <hr>
+                <div class="address">
+                    <div class="card" style="width: 100%;">
+                        <div class="card-body">
+                            <h6 class="card-subtitle mb-2 text-muted">Địa chỉ</h6>
+                            <p class="card-text" id="customerAddress"></p>
+                            <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Thêm địa chỉ</a>
+                            <a href="#" class="card-link">Đổi địa chỉ</a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div>
+                    <a href="/pay"><button type="submit" class="btn-pay">ĐẶT HÀNG</button></a>
+                </div>
+            </div>
+
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm địa chỉ</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea class="form-control" id="newaddress" rows="3" name="newaddress"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                      <button type="button" class="btn btn-primary">Thêm địa chỉ</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            <div class="col-lg-6">
+                <div class="cart-content">
+                    <div class="cart-titel">
+                        <h3>Giỏ hàng của bạn</h3>
+                    </div>
+                    <hr>
+                    <div class="cart-product-box" id="cart-product-box">
+
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="flex-bx">
+                            <div class="fs-6 left">Giá trị:</div>
+                            <div class="fs-6 right" id="value"></div>
+                        </div>
+                        <div class="flex-bx">
+                            <div class="fs-6 left">Vận chuyển:</div>
+                            <div class="fs-6 right">30.000</div>
+                        </div>
+
+                        <div class="flex-bx">
+                            <div class="fs-5 left">Tổng cộng:</div>
+                            <div class="fs-5 right"><b id="total-in-cart"></b></div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="about-transport">
+                        <h6>Chính sách giao hàng:</h6>
+                        <li>Giao hàng toàn quốc</li>
+                        <li>Giao hàng trong 3-5 ngày</li>
+                        <li>Giao hàng tiêu chuẩn đồng giá 30.000</li>
+                        <li>Cách thức thanh toán: COD nhận hàng rồi thanh toán</li>
+                        <li>Miễn phí đổi trả sản phẩm trong 7 ngày</li>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+    $(document).ready(
+        $.ajax({
+            url: 'cart/checkcart',
+            method: 'GET',
+            success: (data) => {
+                console.log(data.status)
+                if (data.status == "NoData") {
+                    $('#nodata').show();
+                }
+                if (data.status == "HaveData") {
+                    $('#nodata').hide();
+                    $('#cartdetail').show();
+                    var html = ""
+                    var total = 0;
+                    for (var i = 0; i < data.listP.length; i++) {
+                        var price = Number(data.listP[i].Amount) * Number(data.listP[i].PurchasePrice)
+                        html += "<div class='row row-product-cart'>" +
+                            "<div class='col-3'><a href='/product-detail?id=" + data.listP[i].ProductID + "'> <img src='" + data.listP[i].Path + "' style='width: 100%'> </a></div>" +
+                            "<div class='col-8'>" +
+
+                            "<div><a class='product-titel' href='/product-detail?id=" + data.listP[i].ProductID + "'><h4>" + data.listP[i].Name + "</h4></a></div>" +
+                            "<h5>" + data.listP[i].PurchasePrice + "</h5>" +
+                            "<div>Size: <span>" + data.listP[i].Size + "</span></div>" +
+                            "<div>Màu sắc: <span>" + data.listP[i].Color + "</span></div>" +
+                            "<div class='flex-bx'>" +
+                            "<div class='left'>Số lượng: <span>" + data.listP[i].Amount + "</span></div>" +
+                            "<div class='right'> " + price + " </div>" +
+                            "</div>" +
+                            "</div>" +
+                            "<div class='col-1'> <a href='/cart/remove?cid=" + data.listP[i].CartID + "&pid=" + data.listP[i].ProductID + "&color=" + data.listP[i].Color + "&size=" + data.listP[i].Size + "&amount=" + data.listP[i].Amount + "''><button type='button' class='btn-close' aria-label='Close'></button></a></div>" +
+                            "</div>"
+                        total += price;
+                    }
+                    $('#cart-product-box').html(html);
+
+                    $('#value').text(total);
+                    $('#total-in-cart').text(total + 30000);
+                }
+            }
+        }),
+        $.ajax({
+            url: '/pay/userinfor',
+            method: 'GET',
+            success: (data) => {
+                $('#customerName').text(data.data.FirstName + " " + data.data.LastName);
+                $('#customerPhone').text(data.data.Phone);
+                $('#customerEmail').text(data.data.Email);
+                $('#customerAddress').text(data.data.Address);
+
+            }
+        })
+
+    )
+</script>
