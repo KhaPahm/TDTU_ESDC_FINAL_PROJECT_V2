@@ -32,7 +32,7 @@ router.route("/action",).post(upload.array('photos', 20), function (request, res
     var action = request.body.action;
     console.log(action)
     if (action == "fetch") {
-        var query = "select p.ProductID as id, p.Name as name, p.Price as price, sum(Amount) as amount from esdc_final.product p inner join esdc_final.property prop on p.ProductID = prop.ProductID group by p.ProductID order by p.ProductID desc"
+        var query = "select p.ProductID as id, p.Name as name, p.Price as price, sum(Amount) as amount from esdc_final.product p inner join esdc_final.property prop on p.ProductID = prop.ProductID where p.Deleted=0 group by p.ProductID order by p.ProductID desc"
         database.query(query, function (error, data) {
             response.json({
                 data: data
@@ -86,7 +86,7 @@ router.route("/action",).post(upload.array('photos', 20), function (request, res
     if (action == 'delete') {
         var id = request.body.id;
 
-        var query = ` DELETE FROM esdc_final.Property WHERE ProductID =${id}; DELETE FROM esdc_final.images WHERE ProductID = ${id}; DELETE FROM esdc_final.Product WHERE ProductID = ${id};`;
+        var query = ` update esdc_final.product set Deleted = true where ProductID = ${id}; update esdc_final.property set Deleted = true where ProductID = ${id}; update esdc_final.images set Deleted = true where ProductID = ${id};`;
 
         database.query(query, function (error, data) {
 
@@ -97,7 +97,7 @@ router.route("/action",).post(upload.array('photos', 20), function (request, res
     }
 
     if (action == 'removeall') {
-        var query = ` DELETE FROM esdc_final.Property; DELETE FROM esdc_final.images ; DELETE FROM esdc_final.Product;`;
+        var query = `update esdc_final.product set Deleted = true; update esdc_final.property set Deleted = true; update esdc_final.images set Deleted = true;`;
 
         database.query(query, function (error, data) {
             response.json({

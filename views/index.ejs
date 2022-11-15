@@ -58,7 +58,7 @@
               <img src="img/logo_brand.png" class="img-brand">
             </div>
             <br>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="signup-error"
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="signin-error"
               style="text-align: center;">
               <strong id="message">Incorrect username or Password!</strong>
             </div>
@@ -101,7 +101,7 @@
   </section>
 
   <script>
-    $("#signup-error").hide();
+    $("#signin-error").hide();
     $("#cart").hide();
 
     $("#signin").on("submit", function (event) {
@@ -113,8 +113,8 @@
         dataType: "JSON",
         success: function (data) {
           if (data.status == 'error') {
-            $("#signup-error").slideDown(300);
-            $("#signup-error").show();
+            $("#signin-error").slideDown(300);
+            $("#signin-error").show();
           } else {
             location.reload();
           }
@@ -155,6 +155,10 @@
         }
       })
     )
+
+    function formatMoneyValue(moneyValue) {
+      return moneyValue.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    }
 
   </script>
 

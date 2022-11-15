@@ -7,9 +7,13 @@
         <div class="col-lg-6 col-md-8 col-sm-10">
             <form class="signup-form" id="signup-form" onsubmit="return false;">
                 <div class="signup-input">
+                    <label for="" class="form-label"><span style="color: red;">*</span>Email: </label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+                </div>
+                <br>
+                <div class="signup-input">
                     <label for="username" class="form-label"><span style="color: red;">*</span> Tên đăng nhập:</label>
-                    <input type="text" class="form-control" id="username" placeholder="name@example.com"
-                        name="username">
+                    <input type="text" class="form-control" id="username" name="username">
                 </div>
                 <br>
 
@@ -60,25 +64,54 @@
                     </div>
                 </div>
                 <br>
-                <div class="row signup-input">
-                    <div class="col-6">
-                        <label for="phome" class="form-label"> <span style="color: red;">*</span> Số điện thoại:
-                        </label>
-                        <input type="text" class="form-control" id="phome" name="phone">
-                    </div>
-                    <div class="col-6">
-                        <label for="" class="form-label">Email: </label>
-                        <input type="text" class="form-control" id="email" name="email">
-                    </div>
+                <div class="signup-input">
+                    <label for="phome" class="form-label"> <span style="color: red;">*</span> Số điện thoại:
+                    </label>
+                    <input type="text" class="form-control" id="phome" name="phone">
                 </div>
                 <br>
                 <div class="signup-input">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label for="province" class="form-label"> <span style="color: red;">*</span> Tỉnh/Thành
+                                phố:</label>
+
+                            <select class="form-select form-select-md mb-3" aria-label=".form-select-md example"
+                                name="province" id="province">
+
+                            </select>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="district" class="form-label"> <span style="color: red;">*</span> Huyện/Thành
+                                phố:</label>
+
+                            <select class="form-select form-select-md mb-3" aria-label=".form-select-md example"
+                                name="district" id="district">
+
+                            </select>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <label for="ward" class="form-label"> <span style="color: red;">*</span> Xã/Phường:</label>
+
+                            <select class="form-select form-select-md mb-3" aria-label=".form-select-md example"
+                                name="ward" id="ward">
+
+                            </select>
+                        </div>
+                    </div>
                     <label for="address" class="form-label"> <span style="color: red;">*</span> Địa chỉ:</label>
                     <input type="text" class="form-control" id="address" name="address">
                 </div>
                 <br>
                 <div class="d-flex justify-content-center">
                     <input type="submit" name="signin" value="ĐĂNG KÍ" class="btn-signin" style="width: 20%">
+                </div>
+                <br>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert" id="form-error">
+                    <strong id="message">Quý khách vui lòng điền đầy đủ thông tin để tiến hành đăng ký!</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </form>
             <br>
@@ -93,21 +126,65 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p>Sign Up Success!!</p>
+                    <p id="singup-mess-done"></p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">SHOPPING NOW</button>
+                    <a href="https://mail.google.com/"><button type="button" class="btn btn-primary">Kiểm tra mail!</button></a>
                 </div>
             </div>
         </div>
     </div>
 
+</div>
+<script>
 
 
-    <script>
-        $('#signup-error').hide();
-        $('#signup-form').on('submit', function (event) {
-            event.preventDefault;
+    $('#signup-error').hide();
+    $('#form-error').hide();
+    $('#signup-form').on('submit', function (event) {
+        event.preventDefault;
+
+        if ($("#username").val() == "") {
+            $("#username").addClass('not-null')
+        }
+        if ($("#password").val() == "") {
+            $("#password").addClass('not-null')
+        }
+        if ($("#confirmpassword").val() == "") {
+            $("#confirmpassword").addClass('not-null')
+        }
+
+        if ($("#firstname").val() == "") {
+            $("#firstname").addClass('not-null')
+        }
+        if ($("#lastname").val() == "") {
+            $("#lastname").addClass('not-null')
+        }
+        if ($("#phome").val() == "") {
+            $("#phome").addClass('not-null')
+        }
+        if ($("#address").val() == "") {
+            $("#address").addClass('not-null')
+        }
+        if ($("#email").val() == "") {
+            $("#email").addClass('not-null')
+        }
+        if ($("#province").val() == "") {
+            $("#province").addClass('not-null')
+        }
+        if ($("#district").val() == "") {
+            $("#district").addClass('not-null')
+        }
+        if ($("#ward").val() == "") {
+            $("#ward").addClass('not-null')
+        }
+
+        if ($("#confirmpassword").val() != $("#password").val()) {
+            $("#confirmpassword").addClass('not-null')
+            return;
+        }
+
+        if ($("#username").val() != "" && $("#password").val() != "" && $("#confirmpassword").val() != "" && $("#firstname").val() != "" && $("#lastname").val() != "" && $("#phome").val() != "" && $("#address").val() != "" && $("#email").val() != "" &&  $("#province").val() != "" &&  $("#district").val() != "" &&  $("#ward").val() != "") {
             $.ajax({
                 url: "/signup",
                 method: "POST",
@@ -121,41 +198,119 @@
                     else {
                         $("#signup-error").slideUp(500);
                         $("#signup-error").hide();
+                        $('#signup-mess-done').text("Chúng tôi đã gửi email xác nhận đến " + data.mail + "! Vui lòng kiểm tra hộp thư và xác nhận!")
                         $("#signup-done").modal("show");
                     }
                 }
             })
+        } else {
+            $("#form-error").slideDown(300);
+            $("#form-error").show();
+        }
+
+
+    })
+
+    function checkPasswordMatch() {
+        var password = $("#password").val();
+        if (password !== "") {
+            var confirmPassword = $("#confirmpassword").val();
+            if (password != confirmPassword)
+                $("#checkpassword").html("<b class='text-danger'>Passwords does not match!</b>");
+            else
+                $("#checkpassword").html("<b class='text-success'> Passwords match. </b>");
+        }
+    }
+
+
+    $("#confirmpassword").keyup(checkPasswordMatch);
+
+
+    $("#username").keyup(checknull)
+    $("#password").keyup(checknull)
+    $("#confirmpassword").keyup(checknull)
+    $("#firstname").keyup(checknull)
+    $("#lastname").keyup(checknull)
+    $("#phome").keyup(checknull)
+    $("#address").keyup(checknull)
+    $("#email").keyup(checknull)
+
+    function checknull() {
+        if ($(this).val() == "") {
+            $(this).addClass('not-null');
+        } else {
+            $(this).removeClass('not-null');
+        }
+    }
+
+
+    function callApiProvinces() {
+        $.ajax({
+            url: 'https://provinces.open-api.vn/api/p',
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data, 'province')
+            }
         })
+    }
 
-        function checkPasswordMatch() {
-            var password = $("#password").val();
-            if(password !== "") {
-                var confirmPassword = $("#confirmpassword").val();
-                if (password != confirmPassword)
-                    $("#checkpassword").html("<b class='text-danger'>Passwords does not match!</b>");
-                else
-                    $("#checkpassword").html("<b class='text-success'> Passwords match. </b>");
+    callApiProvinces('https://provinces.open-api.vn/api/?depth=1')
+
+    function callApiDistricts(host) {
+        $.ajax({
+            url: host,
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data.districts, 'district')
             }
-        }
+        })
+    }
 
-        
-        $("#confirmpassword").keyup(checkPasswordMatch);
-        
-
-        $("#username").keyup(checknull)
-        $("#password").keyup(checknull)
-        $("#confirmpassword").keyup(checknull)
-        $("#firstname").keyup(checknull)
-        $("#lastname").keyup(checknull)
-        $("#phome").keyup(checknull)
-        $("#address").keyup(checknull)
-
-        function checknull() {
-            if ($(this).val() == "") {
-                $(this).addClass('not-null');
-            } else {
-                $(this).removeClass('not-null');
+    function callApiWards(host) {
+        $.ajax({
+            url: host,
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data.wards, 'ward')
             }
+        })
+    }
+
+    function renderApiProvinces(array, select) {
+        var option = "<option disable value=''>---Chọn---</option>";
+        array.forEach(element => {
+            option += `<option data-code="${element.code}" value="${element.name}">${element.name}</option>`
+        });
+        $("#" + select).html(option)
+    }
+
+    const host = "https://provinces.open-api.vn/api/";
+
+    $('#province').change(() => {
+        if ($('#province option:selected').val() == "") {
+            $('#province').addClass("not-null")
+        } else {
+            $('#province').removeClass("not-null")
+            callApiDistricts(host + "p/" + $('#province option:selected').attr('data-code') + "?depth=2");
         }
-    </script>
-</div>
+    })
+
+    $('#district').change(() => {
+        if ($('#district option:selected').val() == "") {
+            $('#district').addClass("not-null")
+        } else {
+            $('#district').removeClass("not-null")
+            callApiWards(host + "d/" + $('#district option:selected').attr('data-code') + "?depth=2");
+        }
+    })
+
+    $('#ward').change(() => {
+        if ($('#ward option:selected').val() == "") {
+            $('#ward').addClass("not-null")
+        } else {
+            $('#ward').removeClass("not-null")
+
+        }
+    })
+
+</script>

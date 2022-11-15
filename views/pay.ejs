@@ -23,19 +23,20 @@
                     <div class="card" style="width: 100%;">
                         <div class="card-body">
                             <label for="homeAdress" class="align-self-center">
-                                <h6 class="card-subtitle mb-2 text-muted">Nhận hàng tại nhà:</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Nhận hàng địa chỉ:</h6>
                             </label>
                             <p class="card-text" id="customerAddress"></p>
                             <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#exampleModal">Thêm địa
                                 chỉ</a>
-                            <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#changeAddress">Đổi địa
+                            <a href="#" class="card-link" data-bs-toggle="modal" data-bs-target="#changeAddress"
+                                id="anotherAddress">Đổi địa
                                 chỉ</a>
                         </div>
                     </div>
                 </div>
                 <hr>
                 <div>
-                    <a href="/pay"><button type="submit" class="btn-pay">ĐẶT HÀNG</button></a>
+                    <button type="submit" class="btn-pay" id="order">ĐẶT HÀNG</button>
                 </div>
             </div>
 
@@ -47,13 +48,48 @@
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm địa chỉ</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <textarea class="form-control" id="newaddress" rows="3" name="newaddress"></textarea>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-primary">Thêm địa chỉ</button>
-                        </div>
+                        <form action="POST" onsubmit="return false;" id="new-address">
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <label for="province" class="form-label"> <span style="color: red;">*</span>
+                                            Tỉnh</label>
+
+                                        <select class="form-select form-select-md mb-3"
+                                            aria-label=".form-select-md example" name="province" id="province">
+
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label for="district" class="form-label"> <span style="color: red;">*</span>
+                                            Huyện:</label>
+
+                                        <select class="form-select form-select-md mb-3"
+                                            aria-label=".form-select-md example" name="district" id="district">
+
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <label for="ward" class="form-label"> <span style="color: red;">*</span>
+                                            Xã/Phường:</label>
+
+                                        <select class="form-select form-select-md mb-3"
+                                            aria-label=".form-select-md example" name="ward" id="ward">
+
+                                        </select>
+                                    </div>
+                                </div>
+                                <label for="address" class="form-label"> <span style="color: red;">*</span> Địa
+                                    chỉ:</label>
+                                <input type="text" class="form-control" id="address" name="address">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn btn-primary" id="btn-newAddress">Thêm địa chỉ</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -66,13 +102,13 @@
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Đổi địa chỉ</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
-                            <input type="radio" id="q7" name="address" value="Quận 7">
-                            <label for="q7">Quận 7</label>
+                        <div class="modal-body" id="listAddress">
+
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                            <button type="button" class="btn btn-primary">Thêm địa chỉ</button>
+                            <button type="submmit" class="btn btn-primary" data-bs-dismiss="modal"
+                                id="btn-changeAddress">Đổi địa chỉ</button>
                         </div>
                     </div>
                 </div>
@@ -126,6 +162,12 @@
 </div>
 
 <script>
+    $(':input', '#new-address')
+        .not(':button, :submit, :reset, :hidden')
+        .val('')
+        .prop('checked', false)
+        .prop('selected', false);
+
     $(document).ready(
         $.ajax({
             url: 'cart/checkcart',
@@ -147,12 +189,12 @@
                             "<div class='col-8'>" +
 
                             "<div><a class='product-titel' href='/product-detail?id=" + data.listP[i].ProductID + "'><h4>" + data.listP[i].Name + "</h4></a></div>" +
-                            "<h5>" + data.listP[i].PurchasePrice + "</h5>" +
+                            "<h5>" + formatMoneyValue(data.listP[i].PurchasePrice) + "</h5>" +
                             "<div>Size: <span>" + data.listP[i].Size + "</span></div>" +
                             "<div>Màu sắc: <span>" + data.listP[i].Color + "</span></div>" +
                             "<div class='flex-bx'>" +
                             "<div class='left'>Số lượng: <span>" + data.listP[i].Amount + "</span></div>" +
-                            "<div class='right'> " + price + " </div>" +
+                            "<div class='right'> " + formatMoneyValue(price) + " </div>" +
                             "</div>" +
                             "</div>" +
                             "<div class='col-1'> <a href='/cart/remove?cid=" + data.listP[i].CartID + "&pid=" + data.listP[i].ProductID + "&color=" + data.listP[i].Color + "&size=" + data.listP[i].Size + "&amount=" + data.listP[i].Amount + "''><button type='button' class='btn-close' aria-label='Close'></button></a></div>" +
@@ -161,8 +203,8 @@
                     }
                     $('#cart-product-box').html(html);
 
-                    $('#value').text(total);
-                    $('#total-in-cart').text(total + 30000);
+                    $('#value').text(formatMoneyValue(total));
+                    $('#total-in-cart').text(formatMoneyValue(total + 30000));
                 }
             }
         }),
@@ -173,10 +215,142 @@
                 $('#customerName').text(data.data.FirstName + " " + data.data.LastName);
                 $('#customerPhone').text(data.data.Phone);
                 $('#customerEmail').text(data.data.Email);
-                $('#customerAddress').text(data.data.Address);
+                $('#customerAddress').text(data.data.Address + ", " + data.data.Ward + ", " + data.data.District + ", " + data.data.Province);
 
             }
         })
 
     )
+
+    $("#anotherAddress").on('click', () => {
+        $.ajax({
+            url: '/pay/anotherAddress',
+            method: "GET",
+            success: (data) => {
+                html = ""
+                for (var i = 0; i < data.addressList.length; i++) {
+                    html += "<input type='radio' id='" + data.addressList[i].AddressID + "' name='address' value='" + data.addressList[i].Address + ", " + data.addressList[i].Ward + ", " + data.addressList[i].District + ", " + data.addressList[i].Province + "'>" +
+                        "<label for='" + data.addressList[i].AddressID + "'> &nbsp;" + data.addressList[i].Address + ", " + data.addressList[i].Ward + ", " + data.addressList[i].District + ", " + data.addressList[i].Province + "</label><br>";
+                }
+                $("#listAddress").html(html);
+            }
+        })
+    })
+
+    $("#btn-changeAddress").on('click', (event) => {
+        var choiceAddress = $("input[type='radio'][name='address']:checked").val();
+        $('#customerAddress').text(choiceAddress);
+
+    })
+
+    $('#new-address').on('submit', (event) => {
+        var newAddress = $('#new-address').serialize();
+        event.preventDefault;
+        $.ajax({
+            url: '/pay/addNewAdress',
+            method: "POST",
+            data: newAddress,
+            dataType: "JSON",
+            success: (data) => {
+                if (data.status == "success") {
+                    $('#customerAddress').text(data.newAddress);
+                    $('#exampleModal').modal('hide');
+                }
+            }
+        })
+
+    })
+
+    $('#order').on('click', () => {
+        var Address = $('#customerAddress').text();
+        var TotalPrice = $('#total-in-cart').text();
+        $.ajax({
+            url: '/pay/order',
+            method: "POST",
+            data: { address: Address, total: TotalPrice },
+            dataType: "JSON",
+            success: (data) => {
+
+            }
+        })
+    })
+
+
+    function checknull() {
+        if ($(this).val() == "") {
+            $(this).addClass('not-null');
+        } else {
+            $(this).removeClass('not-null');
+        }
+    }
+
+
+    function callApiProvinces() {
+        $.ajax({
+            url: 'https://provinces.open-api.vn/api/p',
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data, 'province')
+            }
+        })
+    }
+
+    callApiProvinces('https://provinces.open-api.vn/api/?depth=1')
+
+    function callApiDistricts(host) {
+        $.ajax({
+            url: host,
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data.districts, 'district')
+            }
+        })
+    }
+
+    function callApiWards(host) {
+        $.ajax({
+            url: host,
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data.wards, 'ward')
+            }
+        })
+    }
+
+    function renderApiProvinces(array, select) {
+        var option = "<option disable value=''>---Chọn---</option>";
+        array.forEach(element => {
+            option += `<option data-code="${element.code}" value="${element.name}">${element.name}</option>`
+        });
+        $("#" + select).html(option)
+    }
+
+    const host = "https://provinces.open-api.vn/api/";
+
+    $('#province').change(() => {
+        if ($('#province option:selected').val() == "") {
+            $('#province').addClass("not-null")
+        } else {
+            $('#province').removeClass("not-null")
+            callApiDistricts(host + "p/" + $('#province option:selected').attr('data-code') + "?depth=2");
+        }
+    })
+
+    $('#district').change(() => {
+        if ($('#district option:selected').val() == "") {
+            $('#district').addClass("not-null")
+        } else {
+            $('#district').removeClass("not-null")
+            callApiWards(host + "d/" + $('#district option:selected').attr('data-code') + "?depth=2");
+        }
+    })
+
+    $('#ward').change(() => {
+        if ($('#ward option:selected').val() == "") {
+            $('#ward').addClass("not-null")
+        } else {
+            $('#ward').removeClass("not-null")
+
+        }
+    })
 </script>

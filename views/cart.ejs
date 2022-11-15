@@ -50,7 +50,7 @@
                     </div>
                     <br>
                     <div>
-                        <a href="/pay"><button type="submit" class="btn-pay" >THANH TOÁN</button></a>
+                        <a href="/pay"><button type="submit" class="btn-pay">THANH TOÁN</button></a>
                     </div>
                 </div>
 
@@ -93,12 +93,12 @@
                             "<div class='col-8'>" +
 
                             "<div><a class='product-titel' href='/product-detail?id=" + data.listP[i].ProductID + "'><h4>" + data.listP[i].Name + "</h4></a></div>" +
-                            "<h5>" + data.listP[i].PurchasePrice + "</h5>" +
+                            "<h5>" + formatMoneyValue(data.listP[i].PurchasePrice) + "</h5>" +
                             "<div>Size: <span>" + data.listP[i].Size + "</span></div>" +
                             "<div>Màu sắc: <span>" + data.listP[i].Color + "</span></div>" +
                             "<div class='flex-bx'>" +
                             "<div class='left'>Số lượng: <span>" + data.listP[i].Amount + "</span></div>" +
-                            "<div class='right'> " + price + " </div>" +
+                            "<div class='right'> " + formatMoneyValue(price) + " </div>" +
                             "</div>" +
                             "</div>" +
                             "<div class='col-1'> <a href='/cart/remove?cid=" + data.listP[i].CartID + "&pid=" + data.listP[i].ProductID + "&color=" + data.listP[i].Color + "&size=" + data.listP[i].Size + "&amount=" + data.listP[i].Amount + "''><button type='button' class='btn-close' aria-label='Close'></button></a></div>" +
@@ -107,10 +107,12 @@
                     }
                     $('#cart-product-box').html(html);
 
-                    $('#value').text(total);
-                    $('#total-in-cart').text(total + 30000);
+                    $('#value').text(formatMoneyValue(total));
+                    $('#total-in-cart').text(formatMoneyValue(total + 30000));
                 }
             }
         })
     )
+
+    
 </script>
