@@ -1,5 +1,7 @@
 var express = require('express');
 const multer = require('multer');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 var router = express.Router();
 
@@ -20,13 +22,60 @@ const upload = multer({ storage: storage })
 
 router.get("/", function (request, response, next) {
     response.render('manage', {
-        title: 'Quản lý mặt hàng',
+        title: 'Quản lý đơn hàng',
+        file: 'neworder'
+    });
+});
+
+router.get("/products", function (request, response, next) {
+    response.render('manage', {
+        title: 'Quản lý đơn hàng',
         file: 'listproducts'
     });
 });
 
+router.get('/login', function (request, response, next) {
+    response.render('staffLogin', {
+        title: 'Đăng nhập cho nhân viên'
+    });
+})
+
+router.get('/addstaff', function (request, response, next) {
+    response.render('manage', {
+        title: 'Thêm nhân viên',
+        file: 'addstaff'
+    });
+})
+
+router.get('/checklogin', function (request, response, next) {
+    try {
+        if (!request.cookies.staffRegisterd) {
+            response.json({ loggedIn: 'false', user: 'fail' })
+        } else {
+            const decode = jwt.verify(request.cookies.staffRegisterd, 'thi*sis@jwt%secret0f-website');
+            console.log(decode.username);
+            database.query("SELECT StaffID, Firstname, LastName, role FROM esdc_final.staff where username = ?;", [decode.username], (error, result) => {
+                if (error) throw error
+                var Name = result[0].Firstname + " " + result[0].LastName
+                console.log(Name);
+                response.json({
+                    loggedIn: 'true',
+                    staffId: result[0].StaffID,
+                    name: Name,
+                    Role: result[0].role
+                })
+            })
+        }
+    } catch (error) {
+        if (error) throw error
+    }
+})
 
 
+router.get('/logout', (req, res, next) => {
+    res.clearCookie("staffRegisterd");
+    res.redirect("/manage");
+})
 
 router.route("/action",).post(upload.array('photos', 20), function (request, response, next) {
     var action = request.body.action;
@@ -107,4 +156,71 @@ router.route("/action",).post(upload.array('photos', 20), function (request, res
     }
 })
 
-module.exports = router;
+router.post('/login', (req, res, next) => {
+    var username = req.body.username;
+    var password = req.body.password;
+
+    database.query('SELECT * FROM esdc_final.useraccount where UserName = ?;', [username], async (error, result) => {
+        if (error) throw error;
+        console.log(result)
+        if (!result.length || !await bcrypt.compare(password, result[0].password) || result[0].Role < 1) {
+            console.log("Wrong password");
+            res.json({
+                status: "error",
+                message: "Incorrect username or Password!"
+            })
+        } else {
+            const token = jwt.sign({ username: username }, 'thi*sis@jwt%secret0f-website', {
+                expiresIn: '90d'
+            })
+            const cookieOptions = {
+                expiresIn: new Date(Date.now() + 90 + 24 + 60 + 60 + 1000),
+                httpOnly: true
+            }
+            res.cookie("staffRegisterd", token, cookieOptions);
+            res.json({
+                status: "success",
+                message: "Loggin Success"
+            })
+        }
+    })
+
+})
+
+router.post('/addstaff', async (req, res, next) => {
+    var username = req.body.idcard
+    var Npassword = req.body.lastname + req.body.idcard
+
+
+    const password = await bcrypt.hash(Npassword, 8);
+
+    database.query("SELECT username FROM esdc_final.useraccount WHERE username = ?", [username], async (error, results) => {
+        if (error) throw error;
+        if (results[0]) {
+            res.json({
+                status: 'error',
+                message: "Nhân viên đã được thêm trước đó!"
+            });
+        } else {
+            database.query("insert into esdc_final.useraccount values(?, ?, NOW(), true)", [username, password], (error, result) => {
+                if (error) throw error
+                database.query("insert into esdc_final.staff (FirstName, LastName, Sex, Phone, Address, Username, Role, Deleted, DateOfBirth, IDCartNumber, Email) values(?, ?, ?, ?, ?, ?, ?, false, ?, ?, ?)",
+                    [req.body.firstname, req.body.lastname, req.body.sex, req.body.phone, req.body.address, username, req.body.role, req.body.dayofbirth, req.body.idcard, req.body.email],
+                    (error, result) => {
+                        if (error) throw error
+                        res.json({
+                            status: 'success',
+                            username: username,
+                            password: Npassword
+                        })
+                    })
+
+            })
+        }
+    })
+
+
+})
+
+
+module.exports = router

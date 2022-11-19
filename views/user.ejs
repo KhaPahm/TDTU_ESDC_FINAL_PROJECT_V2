@@ -1,0 +1,345 @@
+<div class="content-profile">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-3">
+                    <img src="/img/defaut_avatar.jpg" alt="" class="avt-profile">
+                </div>
+                <div class="col-lg-9 username-profile-content">
+                    <div class="username-profile" style="padding: 0;">
+                        <h3 id="fullname"></h3>
+                        <h5 id="username">Username: </h5>
+                        <div class="d-flex flex-row">
+                            <p>Email: </p>
+                            <p id="email"></p>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <p>Số điện thoại: </p>
+                            <p id="phone"></p>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-gear"></i>&nbsp;<a>Đổi mật khẩu</a>
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-gear"></i>&nbsp;<a>Chỉnh sửa thông tin cá nhân</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="address-profile-title">
+                <h4>Địa chỉ của bạn:</h4>
+                <a href="" data-bs-toggle="modal" data-bs-target="#editAddress">
+                    <h4>Thêm địa chỉ</h4>
+                </a>
+            </div>
+            <ul class="list-group" id="list-address">
+                <li class='list-group-item'>
+                    <div class='row'>
+                        <div class='col-11'>
+                            second item
+                        </div>
+                        <div class='col-1'>
+                            <a><i class='fa-solid fa-pen edit text-primary' data-id=''></i></a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class='col-lg-6'>
+            <h3>Lịch sử mua hàng</h3>
+            <div class="history-order-list">
+                <div class="card">
+                    <div class="card-header text-muted">
+                        Mã đơn hàng
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <img src="/1667802445546-133461029-den.png" alt="" class="img-history-list">
+                            </div>
+                            <div class='col-9 username-profile'>
+                                <div class="">
+                                    <div><a class='product-titel'
+                                            href='/product-detail?id= + data.listP[i].ProductID + '>
+                                            <h4> Tên sản phẩm </h4>
+                                        </a></div>
+                                    <h5> </h5>
+                                    <div>Size: <span> </span></div>
+                                    <div>Màu sắc: <span> </span></div>
+                                    <div class='flex-bx'>
+                                        <div class='left'>Số lượng: <span> </span></div>
+                                        <div class='right'> Giá </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div style="margin-top: 1em" class="address-profile-title">
+                            <h5>Tổng tiền</h5>
+                            <h5>500000</h5>
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Xem chi tiết
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="editAddress" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm địa chỉ</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="POST" onsubmit="return false;" id="new-address">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <label for="province" class="form-label"> <span style="color: red;">*</span>
+                                    Tỉnh</label>
+
+                                <select class="form-select form-select-md mb-3" aria-label=".form-select-md example"
+                                    name="province" id="province">
+
+                                </select>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="district" class="form-label"> <span style="color: red;">*</span>
+                                    Huyện:</label>
+
+                                <select class="form-select form-select-md mb-3" aria-label=".form-select-md example"
+                                    name="district" id="district">
+
+                                </select>
+                            </div>
+
+                            <div class="col-lg-4">
+                                <label for="ward" class="form-label"> <span style="color: red;">*</span>
+                                    Xã/Phường:</label>
+
+                                <select class="form-select form-select-md mb-3" aria-label=".form-select-md example"
+                                    name="ward" id="ward">
+
+                                </select>
+                            </div>
+                        </div>
+                        <label for="address" class="form-label"> <span style="color: red;">*</span> Địa
+                            chỉ:</label>
+                        <input type="text" class="form-control" id="address" name="address">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
+                            id="btn-newAddress-close">Đóng</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="btn-delete-Address">Xóa
+                            địa chỉ</button>
+                        <button type="submit" class="btn btn-primary" id="btn-newAddress">Thêm địa chỉ</button>
+                        <button type="submit" class="btn btn-primary" id="btn-update-newAddress">Cập nhật địa
+                            chỉ</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $('#btn-delete-Address').hide()
+    $('#btn-update-newAddress').hide()
+    $(document).ready(() => {
+        $.ajax({
+            url: '/user/info',
+            method: "GET",
+            type: "JSON",
+            success: (data) => {
+                $('#fullname').text(data.infor.FirstName + " " + data.infor.LastName);
+                $('#username').text(data.infor.Username);
+                $('#email').text(" " + data.infor.Email);
+                $('#phone').text(" " + data.infor.Phone);
+                var listAdd = ''
+                for (var i = 0; i < data.address.length; i++) {
+                    listAdd += "<li class='list-group-item'>" +
+                        "<div class='row'>" +
+                        " <div class='col-11'>" +
+                        data.address[i].Address + ", " + data.address[i].Province + ", " + data.address[i].District + ", " + data.address[i].Ward +
+                        "</div>" +
+                        "<div class='col-1'>" +
+                        "<a ><i class='fa-solid fa-pen edit text-primary' data-id='" + data.address[i].AddressID + "' data-bs-toggle='modal' data-bs-target='#editAddress'></i></a>" +
+                        "</div>" +
+                        "</div>" +
+                        "</li>";
+
+                }
+                $('#list-address').html(listAdd)
+            }
+        })
+
+
+        $(document).on("click", ".edit", function () {
+            $('#btn-delete-Address').show()
+            $('#btn-newAddress-close').hide()
+            $('#btn-newAddress').hide()
+            $('#btn-update-newAddress').show()
+            var idAddress = $(this).attr('data-id')
+            $.ajax({
+                url: 'user/editAddress',
+                method: 'POST',
+                data: { id: idAddress },
+                dataType: "JSON",
+                success: (data) => {
+                    console.log(data.data.District)
+                    $('#province').val(data.data.Province);
+                    $('#address').val(data.data.Address);
+                    $('#btn-delete-Address').attr('data-id', idAddress)
+                    $('#btn-update-newAddress').attr('data-id', idAddress)
+                }
+            })
+        })
+
+
+
+        $('#btn-delete-Address').click(function () {
+            var idAddress = $(this).attr('data-id')
+            $.ajax({
+                url: 'user/deleteAddress',
+                method: 'POST',
+                data: { id: idAddress },
+                dataType: "JSON",
+                success: (data) => {
+                    if (data.status == 'success') {
+                        alert('Đã xóa địa chỉ!')
+                        location.reload()
+                    }
+                }
+            })
+        })
+    })
+
+    $('#new-address').on('submit', (event) => {
+        var newAddress = $('#new-address').serialize();
+        event.preventDefault;
+        if (checkInforAddress()) {
+            alert("Vui lòng nhập đầy đủ thông tin địa chỉ mới của bạn!");
+        } else {
+            $.ajax({
+                url: '/pay/addNewAdress',
+                method: "POST",
+                data: newAddress,
+                dataType: "JSON",
+                success: (data) => {
+                    if (data.status == "success") {
+                        $('#editAddress').modal('hide');
+                        location.reload();
+                        $('#new-address')[0].reset()
+                    }
+                }
+            })
+        }
+
+    })
+
+
+
+    function checkInforAddress() {
+        var n = false;
+        if ($('#province').val() == '' || $('#province').val() == undefined) {
+            $('#province').addClass('not-null')
+            n = true
+        } if ($('#district').val() == '' || $('#district').val() == undefined) {
+            $('#district').addClass('not-null')
+            n = true
+        } if ($('#ward').val() == '' || $('#ward').val() == undefined) {
+            $('#ward').addClass('not-null')
+            n = true
+        } if ($('#address').val() == '' || $('#address').val() == undefined) {
+            $('#address').addClass('not-null')
+            n = true
+        }
+        return n
+    }
+
+    function checknull() {
+        if ($(this).val() == "") {
+            $(this).addClass('not-null');
+        } else {
+            $(this).removeClass('not-null');
+        }
+    }
+
+    function callApiProvinces() {
+        $.ajax({
+            url: 'https://provinces.open-api.vn/api/p',
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data, 'province')
+            }
+        })
+    }
+
+    callApiProvinces('https://provinces.open-api.vn/api/?depth=1')
+
+    function callApiDistricts(host) {
+        $.ajax({
+            url: host,
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data.districts, 'district')
+            }
+        })
+    }
+
+    function callApiWards(host) {
+        $.ajax({
+            url: host,
+            method: 'GET',
+            success: function (data) {
+                renderApiProvinces(data.wards, 'ward')
+            }
+        })
+    }
+
+    function renderApiProvinces(array, select) {
+        var option = "<option disable value=''>---Chọn---</option>";
+        array.forEach(element => {
+            option += `<option data-code="${element.code}" value="${element.name}">${element.name}</option>`
+        });
+        $("#" + select).html(option)
+    }
+
+    const host = "https://provinces.open-api.vn/api/";
+
+    $('#province').change(() => {
+        if ($('#province option:selected').val() == "") {
+            $('#province').addClass("not-null")
+        } else {
+            $('#province').removeClass("not-null")
+            callApiDistricts(host + "p/" + $('#province option:selected').attr('data-code') + "?depth=2");
+        }
+    })
+
+    $('#district').change(() => {
+        if ($('#district option:selected').val() == "") {
+            $('#district').addClass("not-null")
+        } else {
+            $('#district').removeClass("not-null")
+            callApiWards(host + "d/" + $('#district option:selected').attr('data-code') + "?depth=2");
+        }
+    })
+
+    $('#ward').change(() => {
+        if ($('#ward option:selected').val() == "") {
+            $('#ward').addClass("not-null")
+        } else {
+            $('#ward').removeClass("not-null")
+
+        }
+    })
+
+
+</script>

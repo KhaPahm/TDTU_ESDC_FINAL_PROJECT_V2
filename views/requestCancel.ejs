@@ -1,0 +1,246 @@
+<ul class="nav d-flex">
+    <li class="nav-item dropdown p-2 edit">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            Lọc
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+    </li>
+    <form class="d-flex p-2">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</ul>
+<table class="table table-striped" id="listOrders">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Customer</th>
+            <th scope="col">Address</th>
+            <th scope="col">Ngày đặt</th>
+            <th scope="col">Total</th>
+            <th scope="col">Paid</th>
+            <th scope="col">Detail</th>
+            <th scope="col">Cập nhật</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Lý do hủy đơn!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class=" d-flex flex-row">
+                    <h6 class="p-2">Mã đơn: </h6>
+                    <i>
+                        <h6 class="p-2" id="cancle-order-id"> </h6>
+                    </i>
+                </div>
+                <div class="input-group">
+                    <textarea class="form-control" aria-label="With textarea" id="reason-cancel"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirm-cancel">Xác nhận hủy đơn</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="orderDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Chi tiết đơn hàng</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="cart-titel d-flex flex-row">
+                    <h3 class="p-2">Chi tiết đơn hàng: </h3>
+                    <h3 class="p-2" id="id-order-detail"></h3>
+                </div>
+                <div class="cart-titel d-flex flex-row">
+                    <h6 class="p-2">Khách hàng: </h6>
+                    <h6 class="p-2" id="order-customer"></h6>
+                </div>
+                <div class="cart-titel d-flex flex-row">
+                    <h6 class="p-2">SĐT: </h6>
+                    <h6 class="p-2" id="order-phone"></h6>
+                </div>
+                <div class="cart-titel d-flex flex-row">
+                    <h6 class="p-2">Địa chỉ: </h6>
+                    <h6 class="p-2" id="order-address"></h6>
+                </div>
+                <div class="cart-titel d-flex flex-row">
+                    <h6 class="p-2">Ngày đặt: </h6>
+                    <h6 class="p-2" id="order-date"></h6>
+                </div>
+                <hr>
+                <div class="cart-product-box" id="cart-product-box">
+
+                </div>
+                <hr>
+                <div>
+                    <div class="flex-bx">
+                        <div class="fs-6 left">Giá trị:</div>
+                        <div class="fs-6 right" id="value"></div>
+                    </div>
+                    <div class="flex-bx">
+                        <div class="fs-6 left">Vận chuyển:</div>
+                        <div class="fs-6 right">30.000</div>
+                    </div>
+
+                    <div class="flex-bx">
+                        <div class="fs-5 left">Tổng cộng:</div>
+                        <div class="fs-5 right"><b id="total-in-cart"></b></div>
+                    </div>
+                </div>
+                <div>
+                    <h5>Lí do yêu cầu hủy:</h5>
+                    <p id="req-cancel"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(document).ready(() => {
+        $.ajax({
+            url: 'http://localhost:3000/manageOrder/getDataRequestCancel',
+            method: 'GET',
+            success: (data) => {
+                var html = ""
+                for (var i = 0; i < data.orders.length; i++) {
+                    html += "<tr>" +
+                        "<td>" + data.orders[i].ReceiptID + "</td>" +
+                        "<td>" + data.orders[i].Firstname + " " + data.orders[i].Lastname + "</td>" +
+                        "<td>" + data.orders[i].Address + ", " + data.orders[i].Ward + ", " + data.orders[i].District + ", " + data.orders[i].Province + "</td>" +
+                        "<td>" + data.orders[i].Date.replace("T", " ").replace(".000Z", "") + "</td>" +
+                        "<td>" + data.orders[i].Total + "</td>" +
+                        "<td>" + data.orders[i].Pay + "</td>" +
+                        "<td data-bs-toggle='modal' data-bs-target='#orderDetail' data-id='" + data.orders[i].ReceiptID + "' class='detail'> Chi tiết </td>" +
+                        "<td class='dropdown'>" +
+                        "<p class='dropdown-toggle' data-bs-toggle='dropdown' aria-expanded='false'>" +
+                        "Cập nhật" +
+                        "</p>" +
+                        "<ul class='dropdown-menu dropdown-menu-dark'>" +
+                        "<li><a class='dropdown-item active cancel' href='#'  data-id='" + data.orders[i].ReceiptID + "'>Xác nhận</a></li>" +
+                        "<li><a class='dropdown-item receive' href='#' data-id='" + data.orders[i].ReceiptID + "' data-bs-toggle='modal' data-bs-target='#staticBackdrop'>Không nhận</a></li>" +
+                        "</ul>" +
+                        "</td>" +
+                        "</tr>" +
+                        $('#listOrders tbody')
+                }
+                $('#listOrders tbody').html(html)
+
+            }
+        })
+
+        $(document).on("click", ".receive", function () {
+            var id = $(this).attr('data-id')
+            $.ajax({
+                url: 'http://localhost:3000/manageOrder/done',
+                method: 'POST',
+                data: { orderID: id },
+                dataType: 'JSON',
+                success: (data) => {
+                    if (data.status == 'success') {
+                        location.reload()
+                    }
+                }
+            })
+        })
+
+        $(document).on("click", ".cancel", function () {
+            var id = $(this).attr('data-id');
+            console.log(id);
+            $('#cancle-order-id').text(id);
+            $('#confirm-cancel').attr('data-id', id);
+
+        })
+
+        $(document).on("click", ".detail", function () {
+            var id = $(this).attr('data-id');
+            $('#id-order-detail').text(id);
+            $.ajax({
+                url: 'http://localhost:3000/manageOrder/getDetail',
+                method: 'POST',
+                data: { idOrder: id },
+                success: (data) => {
+                    if (data.status == 'success') {
+                        $('#order-customer').text(data.customer);
+                        $('#order-address').text(data.address);
+                        $('#order-phone').text(data.phone);
+                        $('#order-phone').text(data.phone);
+                        $('#order-date').text(data.date.replace("T", " "));
+                        var html = ""
+                        var total = 0;
+                        for (var i = 0; i < data.data.length; i++) {
+                            var Price = data.data[i].PurchasePrice * data.data[i].Amount;
+                            html += "<div class='row row-product-cart'>" +
+                                "<div><a class='product-titel' href='/product-detail?id=" + data.data[i].ProductID + "'><h4>" + data.data[i].Name + "</h4></a></div>" +
+                                "<h5>" + formatMoneyValue(data.data[i].PurchasePrice) + "</h5>" +
+                                "<div>Size: <span>" + data.data[i].Size + "</span></div>" +
+                                "<div>Màu sắc: <span>" + data.data[i].Color + "</span></div>" +
+                                "<div class='flex-bx'>" +
+                                "<div class='left'>Số lượng: <span>" + data.data[i].Amount + "</span></div>" +
+                                "<div class='right'> " + formatMoneyValue(Price) + " </div>" +
+                                "</div>" +
+                                "</div> </div> ";
+                            total += Price;
+                        }
+                        $('#cart-product-box').html(html)
+                        $("#req-cancel").html(data.data[0].CustomerNote)
+                        $('#total-in-cart').text(formatMoneyValue(total + 30000))
+                    }
+                }
+            })
+        })
+
+
+        $('#confirm-cancel').on('click', function () {
+            var reason = $('#reason-cancel').val()
+            var id = $(this).attr('data-id')
+            $.ajax({
+                url: 'http://localhost:3000/manageOrder/cancelReq',
+                method: 'POST',
+                data: { idOrder: id, reason: reason },
+                success: (data) => {
+                    if (data.status == 'success') {
+                        alert("Không nhận trả đơn hàng: " + id + "\n Lí do: " + reason);
+                        location.reload();
+                    }
+                }
+            })
+        })
+
+    })
+
+    function formatMoneyValue(moneyValue) {
+        return moneyValue.toLocaleString('it-IT', { style: 'currency', currency: 'VND' });
+    }
+
+
+</script>

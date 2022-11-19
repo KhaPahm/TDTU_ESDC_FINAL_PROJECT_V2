@@ -38,6 +38,7 @@
                 <div>
                     <button type="submit" class="btn-pay" id="order">ĐẶT HÀNG</button>
                 </div>
+                
             </div>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -170,7 +171,7 @@
 
     $(document).ready(
         $.ajax({
-            url: 'cart/checkcart',
+            url: '/cart/checkcart',
             method: 'GET',
             success: (data) => {
                 console.log(data.status)
@@ -216,6 +217,7 @@
                 $('#customerPhone').text(data.data.Phone);
                 $('#customerEmail').text(data.data.Email);
                 $('#customerAddress').text(data.data.Address + ", " + data.data.Ward + ", " + data.data.District + ", " + data.data.Province);
+                $('#customerAddress').attr('id-address', data.data.AddressID);
 
             }
         })
@@ -238,8 +240,9 @@
     })
 
     $("#btn-changeAddress").on('click', (event) => {
-        var choiceAddress = $("input[type='radio'][name='address']:checked").val();
-        $('#customerAddress').text(choiceAddress);
+        var choiceAddress = $("input[type='radio'][name='address']:checked");
+        $('#customerAddress').text(choiceAddress.val());
+        $('#customerAddress').attr('id-address', choiceAddress.attr('id'));
 
     })
 
@@ -254,6 +257,8 @@
             success: (data) => {
                 if (data.status == "success") {
                     $('#customerAddress').text(data.newAddress);
+                    $('#customerAddress').attr('id-address', data.id_address);
+                    console.log(data.id_address)
                     $('#exampleModal').modal('hide');
                 }
             }
@@ -261,16 +266,22 @@
 
     })
 
-    $('#order').on('click', () => {
-        var Address = $('#customerAddress').text();
-        var TotalPrice = $('#total-in-cart').text();
+    $('#order').on('click', (event) => {
+        event.preventDefault;
+        var AddressID = $('#customerAddress').attr('id-address');
+        var TotalPrice = $('#total-in-cart').text().replace(".", "").replace('VND', '');
+
         $.ajax({
             url: '/pay/order',
             method: "POST",
-            data: { address: Address, total: TotalPrice },
+            data: { addressid: AddressID, total: TotalPrice },
             dataType: "JSON",
-            success: (data) => {
-
+            success: function(data) {
+                if(data.status == "success") {
+                    location.href="/pay/done?orderID=" + data.orderID
+                } else {
+                    $('#order').attr("disabled", true);
+                }
             }
         })
     })
@@ -353,4 +364,6 @@
 
         }
     })
+
+
 </script>

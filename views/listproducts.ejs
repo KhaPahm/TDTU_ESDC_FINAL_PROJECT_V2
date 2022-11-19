@@ -165,7 +165,7 @@
                             <td>`+ data.data[count].price + `</td>
                             <td>0</td>
                             <td>`+ data.data[count].amount + `</td>
-                            <td> <a><i class="fa-solid fa-pen edit text-primary" data-id="`+ data.data[count].id + `"></i></a> &ensp; <a><i class="fa-solid fa-trash delete text-danger" data-id="` + data.data[count].id + `"></i> </td></a>
+                            <td> <a><i class="fa-solid fa-pen edit text-primary" data-id="`+ data.data[count].id + `"></i></a> &ensp; <a><i class="fa-solid fa-trash delete text-danger" data-id="` + data.data[count].id + `"></i> </a></td>
                           </tr>
                         `;
           }
@@ -200,7 +200,7 @@
       url: "http://localhost:3000/manage/action",
       method: "POST",
       data: formData,
-      contentType: false, 
+      contentType: false,
       processData: false,
       beforeSend: function () {
         $('#action_button').attr('disabled', 'disabled');

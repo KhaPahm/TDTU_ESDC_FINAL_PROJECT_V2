@@ -1,0 +1,84 @@
+<%- include("partials/header.ejs") -%>
+    <section class="header">
+        <nav class="navbar navbar-expand-lg fixed-top color-nav">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/"><img class="img-brand" src="img/logo_brand.png"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </nav>
+
+    </section>
+    <section class="bd">
+
+        <div class="content-body">
+            <div class="card">
+                <div class="card-header" style="text-align: center;">
+                    <h4>Staff Login</h4>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-center">
+                        <img src="img/logo_brand.png" class="img-brand">
+                    </div>
+                    <br>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="signin-staff-error"
+                        style="text-align: center;">
+                        <strong id="message">Incorrect username or Password!</strong>
+                    </div>
+
+                    <div>
+                        <form action="" id="staff-signin" onsubmit="return false;">
+                            <div class="mb-3 row">
+                                <label for="inputUername" class="col-sm-2 col-form-label">Username:</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="inputUername" name="username">
+                                </div>
+                            </div>
+                            <div class="mb-3 row">
+                                <label for="inputPassword" class="col-sm-2 col-form-label">Password:</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="inputPassword" name="password">
+                                </div>
+                            </div>
+
+                            <div>
+                                Liên hệ với quản lý của bạn để nhận tài khoản!
+                            </div>
+                            <br>
+
+                            <div class="d-flex justify-content-center">
+                                <input type="submit" name="signin" value="ĐĂNG NHẬP" class="btn-signin">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        $("#signin-staff-error").hide();
+
+        $('#staff-signin').on('submit', function (event) {
+            event.preventDefault;
+            $.ajax({
+                url: "http://localhost:3000/manage/login",
+                method: 'POST',
+                data: $('#staff-signin').serialize(),
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data)
+                    if (data.status == 'error') {
+                        $("#signin-staff-error").slideDown(300);
+                        $("#signin-staff-error").show();
+                    } else {
+                        location.href = '/manage'
+                    }
+                }
+            })
+        })
+    </script>
+
+    <%- include("partials/footer.ejs") -%>

@@ -370,3 +370,44 @@ body {
 .lableExpandedAddress input:checked {
   background-color: #cccccc;
 }
+
+/* Profile */
+.avt-profile {
+  width: 100%;
+  border-radius: 50%;
+}
+
+.content-profile {
+  padding: 50px 200px 200px 200px;
+}
+
+.username-profile-content {
+  display: flex;
+
+}
+
+.username-profile{
+  align-self: flex-end
+}
+
+
+.username-profile h3 {
+  margin: 0;
+}
+
+.username-profile h4 {
+  margin: 0;
+}
+
+.address-profile-title {
+  display: flex;
+  justify-content: space-between;
+}
+
+.img-history-list{
+  width: 100%;
+}
+
+.overflow-ellipsis {
+  text-overflow: ellipsis;
+}

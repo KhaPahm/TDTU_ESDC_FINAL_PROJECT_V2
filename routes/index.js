@@ -97,7 +97,7 @@ router.post('/signup', function (req, res, next) {
             user: 'khapham.work@gmail.com',
             clientId: '1010698284682-kg6b6ltf5aefq5k26qjtt6su5vhmvaj2.apps.googleusercontent.com',
             clientSecret: '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',
-            refresh_token: '1//04N4DEcbK56P3CgYIARAAGAQSNwF-L9IrM_qT5c2En4Qd60PH3-9mb_UHJo3v-niJO1NwFrXQrgY4h2hu9_SV726ZnciXfuQKp4c',
+            refresh_token: '1//04mW_YadMLVZiCgYIARAAGAQSNwF-L9IrbBlgxfGjoV68huAL5RPhmSW7oBwz02jyMhtSQ0Q7Q97RD6Zwc5stdr63eXV7_aewdXk',
             accessToken: myAccessToken
           }
         })
@@ -148,7 +148,7 @@ router.get('/verify', async (req, res, next) => {
           var ward = form.district;
           const password = await bcrypt.hash(Npassword, 8);
 
-          var query = `INSERT INTO esdc_final.useraccount values("${username}", "${password}", CURDATE()); 
+          var query = `INSERT INTO esdc_final.useraccount values("${username}", "${password}", CURDATE(), false); 
           insert into esdc_final.user (firstname, lastname, sex, phone, email, username) values ("${firstname}", "${lastname}", "${sex}", "${phone}", "${email}", "${username}");
           insert into esdc_final.useraddress (Address, Province, District, Ward, userID) values ("${address}","${province}", "${distinct}", "${ward}", (select userID from esdc_final.user where username = "${username}")); 
           insert into esdc_final.avatar (src, UserName) values ("defaut_avatar.jpg", "${username}"); insert into esdc_final.cart (Total, UserID) values (0, (select UserID from esdc_final.user where UserName = '${username}'))`;
@@ -176,7 +176,6 @@ router.get('/verify', async (req, res, next) => {
 
 router.post('/signin', function (req, res, next) {
   var { username, password } = req.body;
-  console.log(req.body);
   database.query('SELECT * from esdc_final.useraccount WHERE username = ?', [username], async (error, result) => {
 
     if (error) throw error;
@@ -271,8 +270,8 @@ router.post('/addtocart', function (req, res, next) {
         database.query("select UserID from esdc_final.user where username = ?", [decode.username], (error, result) => {
           var userID = result[0].UserID;
           database.query("SELECT ProductID, Size, Color FROM esdc_final.cartdetail where CartID = (SELECT CartID FROM esdc_final.cart where UserID = ?);", [userID], (error, result) => {
-            console.log(result[0])
-            if (!result[0].ProductID) {
+            console.log(result)
+            if (typeof result[0] == 'undefined') {
               var insert = "insert into esdc_final.cartdetail values ((SELECT CartID FROM esdc_final.cart where UserID = ?), ?, ?, (SELECT Price FROM esdc_final.product where ProductID = ?), ?, ?);" +
                 "update esdc_final.cart as c, (select sum(Amount) sumAmount from esdc_final.cartdetail where CartID = (SELECT CartID FROM esdc_final.cart where UserID = ?) group by CartID) as t set c.Total = t.sumAmount where c.UserID = ?;"
               database.query(insert, [userID, req.body.IDProduct, amount, req.body.IDProduct, req.body.size, req.body.color, userID, userID], (error, result) => {
@@ -283,7 +282,7 @@ router.post('/addtocart', function (req, res, next) {
             } else if (result[0].ProductID == req.body.IDProduct && result[0].Size == req.body.size && result[0].Color == req.body.color) {
               var update = "update esdc_final.cartdetail set Amount = Amount + ? where CartID = (SELECT CartID FROM esdc_final.cart where UserID = ?) and ProductID =? and Size=? and Color =?;" +
                 "update esdc_final.cart as c, (select sum(Amount) sumAmount from esdc_final.cartdetail where CartID = (SELECT CartID FROM esdc_final.cart where UserID = ?) group by CartID) as t set c.Total = t.sumAmount where c.UserID = ?;";
-              database.query(update, [userID, req.body.IDProduct, req.body.size, req.body.color, userID, userID], (error, result) => {
+              database.query(update, [amount, userID, req.body.IDProduct, req.body.size, req.body.color, userID, userID], (error, result) => {
                 res.json({
                   status: "success"
                 })

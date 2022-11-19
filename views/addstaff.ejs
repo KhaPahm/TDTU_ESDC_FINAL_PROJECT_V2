@@ -1,0 +1,195 @@
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+        <form class="signup-form" id="signup-form" onsubmit="return false;">
+            <div class="row signup-input">
+                <div class="col-6">
+                    <label for="firstname" class="form-label"><span style="color: red;">*</span> Họ:</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname">
+                </div>
+                <div class="col-6">
+                    <label for="lastname" class="form-label"> <span style="color: red;">*</span> Tên:</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname">
+                </div>
+            </div>
+            <br>
+            <div class="signup-input">
+                <label for="idcard" class="form-label"> <span style="color: red;">*</span> Số CMND/CCCD:
+                </label>
+                <input type="text" class="form-control" id="idcard" name="idcard">
+            </div>
+            <br>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="signup-error">
+                <strong id="message">User has been registered</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <p><span style="color: red;">*</span> Giới tính: </p>
+            <div class="form-check" class="form-label" id="sex">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <input class="form-check-input" type="radio" name="sex" id="male" value="nam">
+                        <label class="form-check-label" for="male">
+                            Nam
+                        </label>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <input class="form-check-input" type="radio" name="sex" id="female" value="nu">
+                        <label class="form-check-label" for="female">
+                            Nữ
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="signup-input">
+                <label for="dayofbirth" class="form-label"><span style="color: red;">*</span> Ngày sinh:
+                </label>
+                <input type="date" class="form-control" id="dayofbirth" name="dayofbirth">
+            </div>
+
+            <br>
+            <div class="signup-input">
+                <label for="phome" class="form-label"> <span style="color: red;">*</span> Số điện thoại:
+                </label>
+                <input type="text" class="form-control" id="phome" name="phone">
+            </div>
+
+            <br>
+            <div class="signup-input">
+                <label for="" class="form-label">Email: </label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+            </div>
+            <br>
+            <div class="signup-input">
+
+                <label for="address" class="form-label"> <span style="color: red;">*</span> Địa chỉ:</label>
+                <input type="text" class="form-control" id="address" name="address">
+            </div>
+            <br>
+            <label for="role" class="form-label"> <span style="color: red;">*</span> Chức vụ:</label>
+            <select class="form-select form-select-md" aria-label=".form-select-md example" name="role" id="role">
+                <option selected value="-1">Open this select menu</option>
+                <option value="2">Nhân viên</option>
+                <option value="3">Quản lý</option>
+            </select>
+            <br>
+            <div class="d-flex justify-content-center">
+                <input type="submit" name="signin" value="ĐĂNG KÍ" class="btn-signin" style="width: 20%">
+            </div>
+            <br>
+
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="form-error">
+                <strong id="message">Vui lòng điền đủ thông tin nhân viên!</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </form>
+        <br>
+    </div>
+</div>
+
+<div class="modal" tabindex="-1" id="signup-done">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">NEW SHIRTS notification</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="singup-mess-done"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+
+    $('#signup-error').hide();
+    $('#form-error').hide();
+    $('#signup-form').on('submit', function (event) {
+        event.preventDefault;
+
+        if ($("#firstname").val() == "") {
+            $("#firstname").addClass('not-null')
+        }
+        if ($("#lastname").val() == "") {
+            $("#lastname").addClass('not-null')
+        }
+        if ($("#phome").val() == "") {
+            $("#phome").addClass('not-null')
+        }
+        if ($("#address").val() == "") {
+            $("#address").addClass('not-null')
+        }
+
+        if ($("#idcard").val() == "") {
+            $("#idcard").addClass('not-null')
+        }
+        if ($("#dayofbirth").val() == "") {
+            $("#dayofbirth").addClass('not-null')
+        }
+        if ($("#role").val() == "-1") {
+            $("#role").addClass('not-null')
+        }
+
+        if ($("#role").val() != "-1" && $("#firstname").val() != "" && $("#lastname").val() != "" && $("#phome").val() != "" && $("#address").val() != "" && $("#idcard").val() != "" && $("#dayofbirth").val() != "") {
+            $.ajax({
+                url: "http://localhost:3000/manage/addstaff",
+                method: "POST",
+                data: $('#signup-form').serialize(),
+                dataType: "JSON",
+                success: function (data) {
+                    if (data.status == 'error') {
+                        $("#signup-error").slideDown(300);
+                        $("#signup-error").show();
+                        $("#idcard").addClass('not-null')
+                    }
+                    else {
+                        alert("Đã thêm nhân viên.\n Tài khoản của nhân viên là: " + data.username + ".\n Mật khẩu là: " + data.password)
+                        $('#signup-form')[0].reset()
+                    }
+                }
+            })
+        } else {
+            $("#form-error").slideDown(300);
+            $("#form-error").show();
+        }
+
+
+    })
+
+    function checkPasswordMatch() {
+        var password = $("#password").val();
+        if (password !== "") {
+            var confirmPassword = $("#confirmpassword").val();
+            if (password != confirmPassword)
+                $("#checkpassword").html("<b class='text-danger'>Passwords does not match!</b>");
+            else
+                $("#checkpassword").html("<b class='text-success'> Passwords match. </b>");
+        }
+    }
+
+
+    $("#confirmpassword").keyup(checkPasswordMatch);
+
+
+    $("#firstname").keyup(checknull)
+    $("#lastname").keyup(checknull)
+    $("#phome").keyup(checknull)
+    $("#address").keyup(checknull)
+    $("#idcard").keyup(checknull)
+    $("#dayofbirth").keyup(checknull)
+
+    function checknull() {
+        if ($(this).val() == "") {
+            $(this).addClass('not-null');
+        } else {
+            $(this).removeClass('not-null');
+        }
+    }
+
+
+
+
+</script>
